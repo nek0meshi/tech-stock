@@ -1,0 +1,24 @@
+scalar DateTime
+
+type Record {
+  id: ID!
+  title: String!
+  tags: [Tag!]!
+  status: RecordStatus!
+  rating: Int!
+  memo: String!
+  readAt: DateTime
+  createdAt: DateTime!
+  updatedAt: DateTime!
+}
+
+type Tag {
+  id: ID!
+  name: String!
+}
+
+enum RecordStatus {
+  UNREAD
+  READING
+  READ
+}

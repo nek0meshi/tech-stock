@@ -1,0 +1,14 @@
+query GetRecords {
+  records {
+    id
+    title
+    tags {
+      id
+      name
+    }
+    status
+    rating
+    memo
+    readAt
+  }
+}
