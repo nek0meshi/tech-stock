@@ -41,7 +41,9 @@ export default function Records() {
                 </h3>
                 <p>{record.memo}</p>
                 <div>
-                  <button className="btn btn-primary">Read</button>
+                  <button type="button" className="btn btn-primary">
+                    Read
+                  </button>
                 </div>
               </div>
             </div>

@@ -1,6 +1,7 @@
 @import "tailwindcss";
 @plugin "daisyui" {
-  themes: corporate --default
+  /* biome-ignore lint/correctness/noUnknownProperty: <explanation> */
+  themes: corporate --default;
 }
 
 body {
