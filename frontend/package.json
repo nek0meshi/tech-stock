@@ -21,6 +21,7 @@
     "next": "15.3.3",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
+    "react-hook-form": "^7.57.0",
     "urql": "^4.2.2"
   },
   "devDependencies": {
