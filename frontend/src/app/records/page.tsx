@@ -21,9 +21,9 @@ export default function Records() {
     <Container className="p-4 flex flex-col gap-4">
       <PageTitle>Records</PageTitle>
       <div className="flex gap-4 justify-end">
-        <button type="button" className="btn btn-primary">
+        <Link href="/records/new" className="btn btn-primary">
           Add Record
-        </button>
+        </Link>
       </div>
       <ul className="flex flex-col gap-4">
         {records.map((record) => (
