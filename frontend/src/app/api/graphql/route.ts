@@ -31,6 +31,11 @@ const schema = createSchema({
         return records;
       },
     },
+    Mutation: {
+      createRecord: () => {
+        return records[0];
+      },
+    },
   },
 });
 

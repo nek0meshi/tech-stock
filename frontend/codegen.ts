@@ -18,7 +18,7 @@ const config: CodegenConfig = {
       },
     },
     "./src/generated/graphql.ts": {
-      plugins: ["typescript"],
+      plugins: ["typescript", "typescript-operations"],
       config: {
         scalars: {
           DateTime: "Date",

@@ -1,4 +1,4 @@
-import React, { ReactNode } from "react";
+import React, { type ReactNode } from "react";
 
 type RadioGroupProps = {
   children: ReactNode;
@@ -12,9 +12,7 @@ export default function RadioGroup({
   direction = "row",
 }: RadioGroupProps) {
   return (
-    <div
-      className={`flex flex-${direction} gap-2 ${className}`}
-    >
+    <div className={`flex flex-${direction} gap-2 ${className}`}>
       {children}
     </div>
   );

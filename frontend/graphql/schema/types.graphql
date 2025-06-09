@@ -3,11 +3,11 @@ scalar DateTime
 type Record {
   id: ID!
   title: String!
-  tags: [Tag!]!
   status: RecordStatus!
   rating: Int!
   memo: String!
   readAt: DateTime
+  tags: [Tag!]!
   createdAt: DateTime!
   updatedAt: DateTime!
 }

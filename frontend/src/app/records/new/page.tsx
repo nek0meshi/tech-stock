@@ -9,6 +9,7 @@ import PageTitle from "@/components/typography/PageTitle";
 import { RecordStatus } from "@/generated/graphql";
 import { useMemo } from "react";
 import { useForm } from "react-hook-form";
+import { gql, useMutation } from "urql";
 
 const STATUS_OPTIONS = [
   { label: "Unread", value: RecordStatus.Unread },
@@ -27,11 +28,18 @@ export default function NewRecord() {
       rating: 5,
       status: RecordStatus.Reading,
       memo: "",
+      tags: [],
     },
   });
+  const [createRecordResult, createRecord] = useMutation(gql`
+      mutation CreateRecord($input: CreateRecordInput!) {
+        createRecord(input: $input) { id }
+      }
+    `);
 
   const onSubmit = (data: any) => {
     console.log(data);
+    createRecord({ input: { ...data, tags: [] } });
   };
 
   const statusOptions = useMemo(() => {

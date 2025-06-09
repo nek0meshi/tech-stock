@@ -1,0 +1,12 @@
+type Mutation {
+  createRecord(input: CreateRecordInput!): Record!
+}
+
+input CreateRecordInput {
+  title: String!
+  rating: Int!
+  status: RecordStatus!
+  memo: String!
+  readAt: DateTime
+  tags: [String!]!
+}
