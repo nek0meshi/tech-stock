@@ -1,5 +1,6 @@
 "use client";
 
+import Button from "@/components/buttons/Button";
 import Container from "@/components/layout/Container";
 import PageTitle from "@/components/typography/PageTitle";
 import { GetRecordsDocument } from "@/generated/client/graphql";
@@ -18,9 +19,7 @@ export default function Records() {
     <Container className="p-4 flex flex-col gap-4">
       <PageTitle>Records</PageTitle>
       <div className="flex gap-4 justify-end">
-        <Link href="/records/new" className="btn btn-primary">
-          Add Record
-        </Link>
+        <Button href="/records/new">Add Record</Button>
       </div>
       <ul className="flex flex-col gap-4">
         {records.map((record) => (
@@ -32,12 +31,14 @@ export default function Records() {
                 </h3>
                 <p>{record.memo}</p>
                 <div className="flex justify-end">
-                  <Link
+                  <Button
                     href={`/records/${record.id}/edit`}
-                    className="btn btn-outline btn-sm"
+                    variant="secondary"
+                    size="sm"
+                    outline
                   >
                     Edit
-                  </Link>
+                  </Button>
                 </div>
               </div>
             </div>

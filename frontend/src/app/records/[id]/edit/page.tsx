@@ -1,5 +1,6 @@
 "use client";
 
+import Button from "@/components/buttons/Button";
 import RecordForm from "@/components/features/records/RecordForm";
 import Container from "@/components/layout/Container";
 import BreadcrumbItem from "@/components/nav/BreadcrumbItem";
@@ -62,14 +63,19 @@ export default function EditRecord() {
 
   return (
     <Container className="p-4 flex flex-col gap-4">
-      <div className="flex flex-col gap-2">
+      <div className="flex flex-col">
         <Breadcrumbs>
           <BreadcrumbItem href="/records">Records</BreadcrumbItem>
           <BreadcrumbItem href={`/records/${record.id}`}>
             {record.title}
           </BreadcrumbItem>
         </Breadcrumbs>
-        <PageTitle>{record.title}</PageTitle>
+        <div className="flex items-center justify-between">
+          <PageTitle>{record.title}</PageTitle>
+          <Button variant="error" size="sm" outline>
+            Delete
+          </Button>
+        </div>
       </div>
       <RecordForm
         handleSubmit={handleSubmit(onSubmit)}

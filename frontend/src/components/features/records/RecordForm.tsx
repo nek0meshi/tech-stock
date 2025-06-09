@@ -1,3 +1,4 @@
+import Button from "@/components/buttons/Button";
 import InputLabel from "@/components/form/InputLabel";
 import InputRadio from "@/components/form/InputRadio";
 import InputRadioLabel from "@/components/form/InputRadioLabel";
@@ -69,12 +70,12 @@ export default function RecordForm({
           {...register("memo")}
         />
       </InputLabel>
-      <button type="submit" className="btn btn-primary">
+      <Button type="submit" variant="primary">
         Submit
-      </button>
-      <button type="button" className="btn btn-outline" onClick={handleCancel}>
+      </Button>
+      <Button type="button" variant="secondary" onClick={handleCancel}>
         Cancel
-      </button>
+      </Button>
     </form>
   );
 }
