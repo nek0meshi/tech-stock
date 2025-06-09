@@ -5,7 +5,8 @@ import PageTitle from "@/components/typography/PageTitle";
 import { GetRecordsDocument } from "@/generated/client/graphql";
 import Link from "next/link";
 import { useMemo } from "react";
-import { gql, useQuery } from "urql";
+import { useQuery } from "urql";
+
 export default function Records() {
   const [result] = useQuery({
     query: GetRecordsDocument,
@@ -31,9 +32,12 @@ export default function Records() {
                 </h3>
                 <p>{record.memo}</p>
                 <div className="flex justify-end">
-                  <button type="button" className="btn btn-outline btn-sm">
+                  <Link
+                    href={`/records/${record.id}/edit`}
+                    className="btn btn-outline btn-sm"
+                  >
                     Edit
-                  </button>
+                  </Link>
                 </div>
               </div>
             </div>

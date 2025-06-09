@@ -30,10 +30,16 @@ const schema = createSchema({
       records: () => {
         return records;
       },
+      record: () => {
+        return records[0];
+      },
     },
     Mutation: {
       createRecord: () => {
         return records[0];
+      },
+      updateRecord: () => {
+        return records[0].id;
       },
     },
   },

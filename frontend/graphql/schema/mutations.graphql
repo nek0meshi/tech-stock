@@ -1,5 +1,6 @@
 type Mutation {
   createRecord(input: CreateRecordInput!): Record!
+  updateRecord(id: ID!, input: UpdateRecordInput!): Record!
 }
 
 input CreateRecordInput {
@@ -8,5 +9,14 @@ input CreateRecordInput {
   status: RecordStatus!
   memo: String!
   readAt: DateTime
-  tags: [String!]!
+  # tags: [String!]!
+}
+
+input UpdateRecordInput {
+  title: String
+  rating: Int
+  status: RecordStatus
+  memo: String
+  readAt: DateTime
+  # tags: [String!]!
 }

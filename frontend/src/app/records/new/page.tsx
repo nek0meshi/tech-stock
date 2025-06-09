@@ -42,7 +42,14 @@ export default function NewRecord() {
 
   const onSubmit = (data: CreateRecordFormData) => {
     console.log(data);
-    createRecord({ input: { ...data, tags: [] } });
+    createRecord({
+      input: {
+        title: data.title,
+        rating: data.rating,
+        status: data.status,
+        memo: data.memo,
+      },
+    });
   };
 
   return (
