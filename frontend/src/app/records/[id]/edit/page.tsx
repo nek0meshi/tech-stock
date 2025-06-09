@@ -4,9 +4,10 @@ import Button from "@/components/buttons/Button";
 import RecordForm from "@/components/features/records/RecordForm";
 import Container from "@/components/layout/Container";
 import PageHeader from "@/components/layout/PageHeader";
+import useConfirmModal from "@/components/modals/ConfirmModal/useConfirmModal";
+import DeleteModal from "@/components/modals/DeleteModal";
 import BreadcrumbItem from "@/components/nav/BreadcrumbItem";
 import Breadcrumbs from "@/components/nav/Breadcrumbs";
-import PageTitle from "@/components/typography/PageTitle";
 import type { RecordFormData } from "@/features/records/typs";
 import {
   GetRecordDocument,
@@ -23,6 +24,7 @@ import { useMutation, useQuery } from "urql";
 export default function EditRecord() {
   const { id } = useParams<{ id: string }>();
   const router = useRouter();
+  const confirmModal = useConfirmModal();
 
   const [result] = useQuery<GetRecordQuery, GetRecordQueryVariables>({
     query: GetRecordDocument,
@@ -52,6 +54,16 @@ export default function EditRecord() {
     });
   };
 
+  const handleDelete = async () => {
+    const result = await confirmModal.confirm();
+
+    if (!result) {
+      return;
+    }
+
+    alert("delete");
+  };
+
   useEffect(() => {
     if (result.data?.record) {
       reset(result.data.record);
@@ -73,7 +85,7 @@ export default function EditRecord() {
           </Breadcrumbs>
         }
         actions={
-          <Button variant="error" size="sm" outline>
+          <Button variant="error" size="sm" outline onClick={handleDelete}>
             Delete
           </Button>
         }
@@ -82,6 +94,11 @@ export default function EditRecord() {
         handleSubmit={handleSubmit(onSubmit)}
         handleCancel={() => router.back()}
         register={register}
+      />
+      <DeleteModal
+        target={record.title}
+        isOpen={confirmModal.open}
+        onConfirm={confirmModal.handleConfirm}
       />
     </Container>
   );

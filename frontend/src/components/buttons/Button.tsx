@@ -5,7 +5,7 @@ interface ButtonProps {
   children: ReactNode;
   href?: string;
   isExternal?: boolean;
-  onClick?: () => void;
+  onClick?: () => void | Promise<void>;
   type?: "button" | "submit";
   variant?: "primary" | "secondary" | "error";
   size?: "sm" | "md" | "lg";
