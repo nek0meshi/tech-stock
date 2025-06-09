@@ -3,6 +3,7 @@
 import Button from "@/components/buttons/Button";
 import RecordForm from "@/components/features/records/RecordForm";
 import Container from "@/components/layout/Container";
+import PageHeader from "@/components/layout/PageHeader";
 import BreadcrumbItem from "@/components/nav/BreadcrumbItem";
 import Breadcrumbs from "@/components/nav/Breadcrumbs";
 import PageTitle from "@/components/typography/PageTitle";
@@ -63,20 +64,20 @@ export default function EditRecord() {
 
   return (
     <Container className="p-4 flex flex-col gap-4">
-      <div className="flex flex-col">
-        <Breadcrumbs>
-          <BreadcrumbItem href="/records">Records</BreadcrumbItem>
-          <BreadcrumbItem href={`/records/${record.id}`}>
-            {record.title}
-          </BreadcrumbItem>
-        </Breadcrumbs>
-        <div className="flex items-center justify-between">
-          <PageTitle>{record.title}</PageTitle>
+      <PageHeader
+        title={record.title}
+        breadcrumbItems={
+          <Breadcrumbs>
+            <BreadcrumbItem href="/records">Records</BreadcrumbItem>
+            <BreadcrumbItem>{record.title}</BreadcrumbItem>
+          </Breadcrumbs>
+        }
+        actions={
           <Button variant="error" size="sm" outline>
             Delete
           </Button>
-        </div>
-      </div>
+        }
+      />
       <RecordForm
         handleSubmit={handleSubmit(onSubmit)}
         handleCancel={() => router.back()}

@@ -2,7 +2,7 @@
 
 import Button from "@/components/buttons/Button";
 import Container from "@/components/layout/Container";
-import PageTitle from "@/components/typography/PageTitle";
+import PageHeader from "@/components/layout/PageHeader";
 import { GetRecordsDocument } from "@/generated/client/graphql";
 import Link from "next/link";
 import { useMemo } from "react";
@@ -17,10 +17,10 @@ export default function Records() {
 
   return (
     <Container className="p-4 flex flex-col gap-4">
-      <PageTitle>Records</PageTitle>
-      <div className="flex gap-4 justify-end">
-        <Button href="/records/new">Add Record</Button>
-      </div>
+      <PageHeader
+        title="Records"
+        actions={<Button href="/records/new">Add Record</Button>}
+      />
       <ul className="flex flex-col gap-4">
         {records.map((record) => (
           <li key={record.id}>

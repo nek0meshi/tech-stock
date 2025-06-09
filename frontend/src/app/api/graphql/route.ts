@@ -5,7 +5,7 @@ import { createSchema, createYoga } from "graphql-yoga";
 
 const records: Record[] = range(1, 10).map((i) => ({
   id: i.toString(),
-  title: `React vs Vue.js ${i}`,
+  title: `React vs Vue.js React vs Vue.js React vs Vue.js ${i}`,
   tags: [
     {
       id: "tag1",

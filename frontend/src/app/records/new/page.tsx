@@ -2,6 +2,7 @@
 
 import RecordForm from "@/components/features/records/RecordForm";
 import Container from "@/components/layout/Container";
+import PageHeader from "@/components/layout/PageHeader";
 import BreadcrumbItem from "@/components/nav/BreadcrumbItem";
 import Breadcrumbs from "@/components/nav/Breadcrumbs";
 import PageTitle from "@/components/typography/PageTitle";
@@ -54,15 +55,17 @@ export default function NewRecord() {
 
   return (
     <Container className="p-4 flex flex-col gap-4">
-      <div>
-        <Breadcrumbs>
-          <BreadcrumbItem>
-            <Link href="/records">Records</Link>
-          </BreadcrumbItem>
-          <BreadcrumbItem>New Record</BreadcrumbItem>
-        </Breadcrumbs>
-        <PageTitle>New Record</PageTitle>
-      </div>
+      <PageHeader
+        title="New Record"
+        breadcrumbItems={
+          <Breadcrumbs>
+            <BreadcrumbItem>
+              <Link href="/records">Records</Link>
+            </BreadcrumbItem>
+            <BreadcrumbItem>New Record</BreadcrumbItem>
+          </Breadcrumbs>
+        }
+      />
       <RecordForm
         handleSubmit={handleSubmit(onSubmit)}
         handleCancel={() => router.back()}
