@@ -38,6 +38,9 @@ TechStockは、技術系記事（Qiita、Zenn、ブログなど）の鑑賞記�
 - 入力補助（URL入力 → タイトル自動取得）
 - タグは選択＋新規追加両方対応
 
+### 5. 記事のデータ取得
+- URLから記事のタイトル・OGP情報を自動取得する
+
 ---
 
 ## 使用技術スタック
@@ -53,6 +56,8 @@ TechStockは、技術系記事（Qiita、Zenn、ブログなど）の鑑賞記�
 - graphql-yoga
 - PostgreSQL
 - wire（DI）
+- Go言語
+- gRPC
 
 ### API層
 - GraphQL（フロントとの通信）
