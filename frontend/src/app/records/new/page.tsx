@@ -6,6 +6,7 @@ import InputRadioLabel from "@/components/form/InputRadioLabel";
 import RadioGroup from "@/components/form/RadioGroup";
 import Container from "@/components/layout/Container";
 import PageTitle from "@/components/typography/PageTitle";
+import { CreateRecordDocument } from "@/generated/client/graphql";
 import { RecordStatus } from "@/generated/graphql";
 import { useMemo } from "react";
 import { useForm } from "react-hook-form";
@@ -31,11 +32,7 @@ export default function NewRecord() {
       tags: [],
     },
   });
-  const [createRecordResult, createRecord] = useMutation(gql`
-      mutation CreateRecord($input: CreateRecordInput!) {
-        createRecord(input: $input) { id }
-      }
-    `);
+  const [createRecordResult, createRecord] = useMutation(CreateRecordDocument);
 
   const onSubmit = (data: any) => {
     console.log(data);

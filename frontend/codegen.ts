@@ -25,6 +25,9 @@ const config: CodegenConfig = {
         },
       },
     },
+    "./src/generated/client/": {
+      preset: "client",
+    },
   },
 };
 

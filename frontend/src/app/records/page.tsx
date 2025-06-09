@@ -2,17 +2,13 @@
 
 import Container from "@/components/layout/Container";
 import PageTitle from "@/components/typography/PageTitle";
+import { GetRecordsDocument } from "@/generated/client/graphql";
 import Link from "next/link";
 import { useMemo } from "react";
 import { gql, useQuery } from "urql";
-
 export default function Records() {
   const [result] = useQuery({
-    query: gql`
-      query {
-        records { id title tags { id name } status rating memo createdAt updatedAt }
-      }
-    `,
+    query: GetRecordsDocument,
   });
 
   const records = useMemo(() => result.data?.records ?? [], [result.data]);
