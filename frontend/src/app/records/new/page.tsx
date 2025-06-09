@@ -6,11 +6,10 @@ import InputRadioLabel from "@/components/form/InputRadioLabel";
 import RadioGroup from "@/components/form/RadioGroup";
 import Container from "@/components/layout/Container";
 import PageTitle from "@/components/typography/PageTitle";
-import { CreateRecordDocument } from "@/generated/client/graphql";
-import { RecordStatus } from "@/generated/graphql";
+import { CreateRecordDocument, RecordStatus } from "@/generated/client/graphql";
 import { useMemo } from "react";
 import { useForm } from "react-hook-form";
-import { gql, useMutation } from "urql";
+import { useMutation } from "urql";
 
 const STATUS_OPTIONS = [
   { label: "Unread", value: RecordStatus.Unread },
@@ -18,12 +17,20 @@ const STATUS_OPTIONS = [
   { label: "Read", value: RecordStatus.Read },
 ] as const;
 
+type CreateRecordFormData = {
+  title: string;
+  rating: number;
+  status: RecordStatus;
+  memo: string;
+  tags: string[];
+};
+
 export default function NewRecord() {
   const {
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm({
+  } = useForm<CreateRecordFormData>({
     defaultValues: {
       title: "",
       rating: 5,
@@ -34,7 +41,7 @@ export default function NewRecord() {
   });
   const [createRecordResult, createRecord] = useMutation(CreateRecordDocument);
 
-  const onSubmit = (data: any) => {
+  const onSubmit = (data: CreateRecordFormData) => {
     console.log(data);
     createRecord({ input: { ...data, tags: [] } });
   };
