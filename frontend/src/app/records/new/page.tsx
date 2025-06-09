@@ -5,8 +5,11 @@ import InputRadio from "@/components/form/InputRadio";
 import InputRadioLabel from "@/components/form/InputRadioLabel";
 import RadioGroup from "@/components/form/RadioGroup";
 import Container from "@/components/layout/Container";
+import BreadcrumbItem from "@/components/nav/BreadcrumbItem";
+import Breadcrumbs from "@/components/nav/Breadcrumbs";
 import PageTitle from "@/components/typography/PageTitle";
 import { CreateRecordDocument, RecordStatus } from "@/generated/client/graphql";
+import Link from "next/link";
 import { useMemo } from "react";
 import { useForm } from "react-hook-form";
 import { useMutation } from "urql";
@@ -59,7 +62,15 @@ export default function NewRecord() {
 
   return (
     <Container className="p-4 flex flex-col gap-4">
-      <PageTitle>New Record</PageTitle>
+      <div>
+        <Breadcrumbs>
+          <BreadcrumbItem>
+            <Link href="/records">Records</Link>
+          </BreadcrumbItem>
+          <BreadcrumbItem>New Record</BreadcrumbItem>
+        </Breadcrumbs>
+        <PageTitle>New Record</PageTitle>
+      </div>
       <form className="flex flex-col gap-4" onSubmit={handleSubmit(onSubmit)}>
         <InputLabel label="Title">
           <input
@@ -93,9 +104,9 @@ export default function NewRecord() {
         <button type="submit" className="btn btn-primary">
           Submit
         </button>
-        <button type="button" className="btn btn-secondary">
+        <Link href="/records" className="btn btn-outline">
           Cancel
-        </button>
+        </Link>
       </form>
     </Container>
   );
