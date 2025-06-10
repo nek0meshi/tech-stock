@@ -1,3 +1,4 @@
+import clsx from "clsx";
 import Link from "next/link";
 import type { ReactNode } from "react";
 import { useMemo } from "react";
@@ -12,6 +13,18 @@ interface ButtonProps {
   outline?: boolean;
 }
 
+const buttonVariants = {
+  primary: "btn-primary",
+  secondary: "btn-secondary",
+  error: "btn-error",
+} as const;
+
+const buttonSizes = {
+  sm: "btn-sm",
+  md: "btn-md",
+  lg: "btn-lg",
+} as const;
+
 export default function Button({
   children,
   type = "button",
@@ -25,7 +38,12 @@ export default function Button({
 }: ButtonProps) {
   const className = useMemo(
     () =>
-      `btn btn-${variant} ${outline ? "btn-outline" : ""} ${size ? `btn-${size}` : ""}`,
+      clsx(
+        "btn",
+        buttonVariants[variant],
+        buttonSizes[size],
+        outline ? "btn-outline" : "",
+      ),
     [variant, outline, size],
   );
 
