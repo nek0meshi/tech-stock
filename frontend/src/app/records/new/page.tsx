@@ -5,24 +5,17 @@ import Container from "@/components/layout/Container";
 import PageHeader from "@/components/layout/PageHeader";
 import BreadcrumbItem from "@/components/nav/BreadcrumbItem";
 import Breadcrumbs from "@/components/nav/Breadcrumbs";
-import PageTitle from "@/components/typography/PageTitle";
 import {
   CreateRecordDocument,
   RecordStatus,
   type Tag,
 } from "@/generated/client/graphql";
+import { type RecordFormData, RecordSchema } from "@/schema/record";
+import { zodResolver } from "@hookform/resolvers/zod";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
 import { useMutation } from "urql";
-
-type CreateRecordFormData = {
-  title: string;
-  rating: number;
-  status: RecordStatus;
-  memo: string;
-  tags: Tag[];
-};
 
 export default function NewRecord() {
   const router = useRouter();
@@ -30,20 +23,23 @@ export default function NewRecord() {
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm<CreateRecordFormData>({
+  } = useForm<RecordFormData>({
     defaultValues: {
       title: "",
       rating: 5,
       status: RecordStatus.Reading,
       memo: "",
-      tags: [],
+      // tags: [],
     },
+    resolver: zodResolver(RecordSchema),
   });
   const [_, createRecord] = useMutation(CreateRecordDocument);
 
-  const onSubmit = (data: CreateRecordFormData) => {
+  console.log({ errors });
+
+  const onSubmit = async (data: RecordFormData) => {
     console.log(data);
-    createRecord({
+    const result = await createRecord({
       input: {
         title: data.title,
         rating: data.rating,
@@ -51,6 +47,16 @@ export default function NewRecord() {
         memo: data.memo,
       },
     });
+
+    console.log({ result });
+
+    if (result.error) {
+      console.error(result.error);
+
+      return;
+    }
+
+    router.push("/records");
   };
 
   return (
@@ -70,6 +76,7 @@ export default function NewRecord() {
         handleSubmit={handleSubmit(onSubmit)}
         handleCancel={() => router.back()}
         register={register}
+        errors={errors}
       />
     </Container>
   );

@@ -4,21 +4,15 @@ import InputRadio from "@/components/form/InputRadio";
 import InputRadioLabel from "@/components/form/InputRadioLabel";
 import RadioGroup from "@/components/form/RadioGroup";
 import { RecordStatus, type Tag } from "@/generated/client/graphql";
+import type { RecordFormData } from "@/schema/record";
 import { type FormEventHandler, useMemo } from "react";
-import type { UseFormRegister } from "react-hook-form";
-
-interface RecordFormData {
-  title: string;
-  rating: number;
-  status: RecordStatus;
-  memo: string;
-  tags: Tag[];
-}
+import type { FieldErrors, UseFormRegister } from "react-hook-form";
 
 interface RecordFormProps {
   handleSubmit: FormEventHandler<HTMLFormElement>;
   handleCancel: () => void;
   register: UseFormRegister<RecordFormData>;
+  errors: FieldErrors<RecordFormData>;
 }
 
 const STATUS_OPTIONS = [
@@ -31,6 +25,7 @@ export default function RecordForm({
   handleSubmit,
   handleCancel,
   register,
+  errors,
 }: RecordFormProps) {
   const statusOptions = useMemo(() => {
     return STATUS_OPTIONS.map((option) => ({
@@ -41,21 +36,21 @@ export default function RecordForm({
 
   return (
     <form className="flex flex-col gap-4" onSubmit={handleSubmit}>
-      <InputLabel label="Title">
+      <InputLabel label="Title" error={errors.title?.message}>
         <input
           type="text"
           className="input input-bordered w-full"
           {...register("title")}
         />
       </InputLabel>
-      <InputLabel label="Rating">
+      <InputLabel label="Rating" error={errors.rating?.message}>
         <input
           type="number"
           className="input input-bordered w-[100px]"
           {...register("rating", { valueAsNumber: true })}
         />
       </InputLabel>
-      <InputLabel label="Status">
+      <InputLabel label="Status" error={errors.status?.message}>
         <RadioGroup>
           {statusOptions.map((option) => (
             <InputRadioLabel key={option.value} label={option.label}>
@@ -64,7 +59,7 @@ export default function RecordForm({
           ))}
         </RadioGroup>
       </InputLabel>
-      <InputLabel label="Memo">
+      <InputLabel label="Memo" error={errors.memo?.message}>
         <textarea
           className="textarea textarea-bordered w-full"
           {...register("memo")}

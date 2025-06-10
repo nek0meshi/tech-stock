@@ -3,13 +3,17 @@
 import Button from "@/components/buttons/Button";
 import Container from "@/components/layout/Container";
 import PageHeader from "@/components/layout/PageHeader";
-import { GetRecordsDocument } from "@/generated/client/graphql";
+import {
+  GetRecordsDocument,
+  type GetRecordsQuery,
+  type GetRecordsQueryVariables,
+} from "@/generated/client/graphql";
 import Link from "next/link";
 import { useMemo } from "react";
 import { useQuery } from "urql";
 
 export default function Records() {
-  const [result] = useQuery({
+  const [result] = useQuery<GetRecordsQuery, GetRecordsQueryVariables>({
     query: GetRecordsDocument,
   });
 

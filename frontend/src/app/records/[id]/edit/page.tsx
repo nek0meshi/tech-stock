@@ -8,13 +8,14 @@ import useConfirmModal from "@/components/modals/ConfirmModal/useConfirmModal";
 import DeleteModal from "@/components/modals/DeleteModal";
 import BreadcrumbItem from "@/components/nav/BreadcrumbItem";
 import Breadcrumbs from "@/components/nav/Breadcrumbs";
-import type { RecordFormData } from "@/features/records/typs";
 import {
   GetRecordDocument,
   type GetRecordQuery,
   type GetRecordQueryVariables,
   UpdateRecordDocument,
 } from "@/generated/client/graphql";
+import { type RecordFormData, RecordSchema } from "@/schema/record";
+import { zodResolver } from "@hookform/resolvers/zod";
 import { useRouter } from "next/navigation";
 import { useParams } from "next/navigation";
 import { useEffect, useMemo } from "react";
@@ -38,12 +39,16 @@ export default function EditRecord() {
     handleSubmit,
     formState: { errors },
     reset,
-  } = useForm<RecordFormData>();
+  } = useForm<RecordFormData>({
+    resolver: zodResolver(RecordSchema),
+  });
 
-  const onSubmit = (data: RecordFormData) => {
+  console.log({ errors });
+
+  const onSubmit = async (data: RecordFormData) => {
     console.log(data);
 
-    updateRecord({
+    const result = await updateRecord({
       id,
       input: {
         title: data.title,
@@ -52,6 +57,16 @@ export default function EditRecord() {
         memo: data.memo,
       },
     });
+
+    console.log({ result });
+
+    if (result.error) {
+      console.error(result.error);
+
+      return;
+    }
+
+    router.push("/records");
   };
 
   const handleDelete = async () => {
@@ -94,6 +109,7 @@ export default function EditRecord() {
         handleSubmit={handleSubmit(onSubmit)}
         handleCancel={() => router.back()}
         register={register}
+        errors={errors}
       />
       <DeleteModal
         target={record.title}
