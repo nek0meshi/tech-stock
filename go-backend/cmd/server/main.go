@@ -8,6 +8,7 @@ import (
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/reflection"
 
+	"tech-stock/internal/service"
 	"tech-stock/pb"
 )
 
@@ -16,8 +17,16 @@ type articleInfoServer struct {
 }
 
 func (s *articleInfoServer) GetArticleInfo(ctx context.Context, req *pb.GetArticleInfoRequest) (*pb.GetArticleInfoResponse, error) {
+	articleInfoService := service.NewArticleInfoService()
+	html, err := articleInfoService.FetchHTML(req.Url)
+	if err != nil {
+		return nil, err
+	}
+
+	title, err := articleInfoService.ExtractTitle(html)
+
 	return &pb.GetArticleInfoResponse{
-		Title:       "test",
+		Title:       title,
 		Description: "test",
 		ImageUrl:    "test",
 	}, nil

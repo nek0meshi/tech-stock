@@ -25,6 +25,7 @@ fmt:
 run-server:
 	cd cmd/server && air main.go
 
+URL ?= https://www.google.com
 .PHONY: test-grpc
 test-grpc:
-	grpcurl -plaintext -d '{"url": "https://www.google.com"}' localhost:50051 article_info.ArticleInfoService/GetArticleInfo
+	grpcurl -plaintext -d '{"url": "$(URL)"}' localhost:50051 article_info.ArticleInfoService/GetArticleInfo
