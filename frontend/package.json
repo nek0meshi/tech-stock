@@ -19,11 +19,14 @@
     "daisyui": "^5.0.43",
     "graphql": "^16.11.0",
     "graphql-yoga": "^5.13.5",
+    "i18next": "^25.2.1",
     "next": "15.3.3",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
     "react-hook-form": "^7.57.0",
-    "urql": "^4.2.2"
+    "urql": "^4.2.2",
+    "zod": "^3.25.56",
+    "zod-i18n-map": "^2.27.0"
   },
   "devDependencies": {
     "@biomejs/biome": "^1.9.4",
