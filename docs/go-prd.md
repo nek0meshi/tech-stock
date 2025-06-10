@@ -29,35 +29,35 @@ message FetchMetadataResponse {
 go-backend/
 ├── cmd/
 │   └── server/
-│       └── main.go                            # エントリーポイント
+│       └── main.go                            # サーバーの起動エントリーポイント
 │
 ├── api/
 │   └── proto/
-│       └── articleinfo/
-│           └── articleinfo.proto              # ← Protoファイル（名前も統一）
+│       └── article_info/                      # ← protoはsnake_caseで
+│           └── article_info.proto
 │
 ├── pb/
-│   ├── articleinfo.pb.go
-│   ├── articleinfo_grpc.pb.go
+│   ├── article_info.pb.go
+│   ├── article_info_grpc.pb.go
 │
 ├── internal/
-│   └── articleinfo/
-│       ├── service/                           # gRPCハンドラ
-│       │   └── service.go
-│       ├── usecase/                           # ビジネスロジック
-│       │   └── usecase.go
-│       └── repository/                        # HTMLパースなど
-│           └── metadata_fetcher.go
+│   └── article_info/                          # ← モジュール単位でsnake_case
+│       ├── service/
+│       │   └── service.go                     # gRPCハンドラ実装
+│       ├── usecase/
+│       │   └── usecase.go                     # ビジネスロジック
+│       └── repository/
+│           └── metadata_fetcher.go            # HTMLメタ情報の取得処理
 │
 ├── pkg/
 │   └── httpclient/
-│       └── client.go
+│       └── client.go                          # 再利用可能なHTTPクライアント
 │
 ├── configs/
-│   └── config.yaml
+│   └── config.yaml                            # 設定ファイル
 │
 ├── scripts/
-│   └── gen_proto.sh
+│   └── gen_proto.sh                           # protoc生成用スクリプト
 │
 ├── go.mod
 └── go.sum
