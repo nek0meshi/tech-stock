@@ -1,3 +1,8 @@
+.PHONY: setup
+setup:
+	go install golang.org/x/tools/cmd/goimports@latest
+	go install github.com/air-verse/air@latest
+
 .PHONY: pb
 pb: clean-pb
 	protoc \
@@ -11,3 +16,15 @@ pb: clean-pb
 .PHONY: clean-pb
 clean-pb:
 	rm -rf pb/*
+
+.PHONY: fmt
+fmt:
+	goimports -w .
+
+.PHONY: run-server
+run-server:
+	cd cmd/server && air main.go
+
+.PHONY: test-grpc
+test-grpc:
+	grpcurl -plaintext -d '{"url": "https://www.google.com"}' localhost:50051 article_info.ArticleInfoService/GetArticleInfo
