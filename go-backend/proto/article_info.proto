@@ -1,0 +1,19 @@
+syntax = "proto3";
+
+package article_info;
+
+option go_package = "tech-stock/pb;pb";
+
+service ArticleInfoService {
+    rpc GetArticleInfo(GetArticleInfoRequest) returns (GetArticleInfoResponse) {}
+}
+
+message GetArticleInfoRequest {
+    string url = 1;
+}
+
+message GetArticleInfoResponse {
+    string title = 1;
+    string description = 2;
+    string image_url = 3;
+}
