@@ -34,9 +34,11 @@ const schema = createSchema({
 
         return { ...record, tags: [] };
       },
-      // deleteRecord: ({ id }) => {
-      //   return deleteRecord(id);
-      // },
+      deleteRecord: async (_, { id }) => {
+        await deleteRecord(id);
+
+        return true;
+      },
     },
   },
 });

@@ -1,6 +1,7 @@
 type Mutation {
   createRecord(input: CreateRecordInput!): Record!
   updateRecord(id: ID!, input: UpdateRecordInput!): Record!
+  deleteRecord(id: ID!): Boolean!
 }
 
 input CreateRecordInput {

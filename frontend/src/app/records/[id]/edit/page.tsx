@@ -9,6 +9,7 @@ import DeleteModal from "@/components/modals/DeleteModal";
 import BreadcrumbItem from "@/components/nav/BreadcrumbItem";
 import Breadcrumbs from "@/components/nav/Breadcrumbs";
 import {
+  DeleteRecordDocument,
   GetRecordDocument,
   type GetRecordQuery,
   type GetRecordQueryVariables,
@@ -31,7 +32,8 @@ export default function EditRecord() {
     query: GetRecordDocument,
     variables: { id },
   });
-  const [_, updateRecord] = useMutation(UpdateRecordDocument);
+  const updateRecord = useMutation(UpdateRecordDocument)[1];
+  const deleteRecord = useMutation(DeleteRecordDocument)[1];
   const record = useMemo(() => result.data?.record, [result.data]);
 
   const {
@@ -70,13 +72,21 @@ export default function EditRecord() {
   };
 
   const handleDelete = async () => {
-    const result = await confirmModal.confirm();
+    const confirmResult = await confirmModal.confirm();
 
-    if (!result) {
+    if (!confirmResult) {
       return;
     }
 
-    alert("delete");
+    const result = await deleteRecord({ id });
+
+    if (result.error) {
+      console.error(result.error);
+
+      return;
+    }
+
+    router.push("/records");
   };
 
   useEffect(() => {
