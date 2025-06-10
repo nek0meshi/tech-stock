@@ -1,9 +1,9 @@
 "use client";
 
+import CloseButton from "@/components/buttons/CloseButton";
 import type { ReactNode } from "react";
 import { useEffect, useState } from "react";
 import { createPortal } from "react-dom";
-
 export interface ModalProps {
   isOpen: boolean;
   onClose: () => void;
@@ -39,9 +39,7 @@ export default function Modal({
         <div className="flex flex-col gap-2">
           <div className="flex flex-row justify-between items-start">
             {title && <h3 className="text-2xl font-bold">{title}</h3>}
-            <button type="button" onClick={onClose} className="cursor-pointer">
-              ✕
-            </button>
+            <CloseButton size="sm" onClick={onClose} />
           </div>
           {children}
         </div>

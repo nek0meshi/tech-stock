@@ -1,8 +1,8 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
+import Toast from "@/components/feedback/toast/Toast";
 import ClientProvider from "@/components/providers/ClientProvider";
-
 const geistSans = Geist({
   variable: "--font-geist-sans",
   subsets: ["latin"],
@@ -30,6 +30,7 @@ export default function RootLayout({
       >
         <ClientProvider>{children}</ClientProvider>
         <div id="modal-root" />
+        <Toast />
       </body>
     </html>
   );

@@ -1,5 +1,6 @@
 "use client";
 
+import useToast from "@/client/hooks/useToast";
 import Button from "@/components/buttons/Button";
 import RecordForm from "@/components/features/records/RecordForm";
 import Container from "@/components/layout/Container";
@@ -27,6 +28,7 @@ export default function EditRecord() {
   const { id } = useParams<{ id: string }>();
   const router = useRouter();
   const confirmModal = useConfirmModal();
+  const toast = useToast();
 
   const [result] = useQuery<GetRecordQuery, GetRecordQueryVariables>({
     query: GetRecordDocument,
@@ -64,9 +66,12 @@ export default function EditRecord() {
 
     if (result.error) {
       console.error(result.error);
+      toast.error("Failed to update record");
 
       return;
     }
+
+    toast.success("Record updated successfully");
 
     router.push("/records");
   };
@@ -82,9 +87,12 @@ export default function EditRecord() {
 
     if (result.error) {
       console.error(result.error);
+      toast.error("Failed to delete record");
 
       return;
     }
+
+    toast.success("Record deleted successfully");
 
     router.push("/records");
   };

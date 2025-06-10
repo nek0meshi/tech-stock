@@ -1,6 +1,7 @@
 "use client";
 
 import Button from "@/components/buttons/Button";
+import Toast from "@/components/feedback/toast/Toast";
 import Container from "@/components/layout/Container";
 import PageHeader from "@/components/layout/PageHeader";
 import {
@@ -25,6 +26,7 @@ export default function Records() {
         title="Records"
         actions={<Button href="/records/new">Add Record</Button>}
       />
+      <Toast />
       <ul className="flex flex-col gap-4">
         {records.map((record) => (
           <li key={record.id}>
