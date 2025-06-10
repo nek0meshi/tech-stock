@@ -1,7 +1,8 @@
 "use client";
 
 import Button from "@/components/buttons/Button";
-import Modal, { type ModalProps } from "@/components/modals/Modal";
+import FooterActionContainer from "@/components/form/FooterActionContainer";
+import Modal from "@/components/modals/Modal";
 
 interface DeleteModalProps {
   target: string;
@@ -19,23 +20,25 @@ export default function DeleteModal({
       isOpen={isOpen}
       onClose={() => onConfirm(false)}
       title="削除しますか？"
+      actions={
+        <FooterActionContainer>
+          <Button variant="error" size="sm" onClick={() => onConfirm(true)}>
+            Delete
+          </Button>
+          <Button
+            variant="secondary"
+            size="sm"
+            outline
+            onClick={() => onConfirm(false)}
+          >
+            Cancel
+          </Button>
+        </FooterActionContainer>
+      }
     >
       <p>
         本当に<b>{target}</b>を削除しますか？
       </p>
-      <div className="flex justify-end gap-2">
-        <Button
-          variant="secondary"
-          size="sm"
-          outline
-          onClick={() => onConfirm(false)}
-        >
-          Cancel
-        </Button>
-        <Button variant="error" size="sm" onClick={() => onConfirm(true)}>
-          Delete
-        </Button>
-      </div>
     </Modal>
   );
 }

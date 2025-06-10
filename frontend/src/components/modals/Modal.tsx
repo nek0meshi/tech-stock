@@ -9,6 +9,7 @@ export interface ModalProps {
   onClose: () => void;
   children: ReactNode;
   title?: string;
+  actions?: ReactNode;
 }
 
 export default function Modal({
@@ -16,6 +17,7 @@ export default function Modal({
   onClose,
   children,
   title,
+  actions,
 }: ModalProps) {
   const [mounted, setMounted] = useState(false);
 
@@ -34,7 +36,7 @@ export default function Modal({
   }
 
   return createPortal(
-    <dialog className="modal" open={isOpen}>
+    <dialog className="modal modal-bottom sm:modal-middle" open={isOpen}>
       <div className="modal-box">
         <div className="flex flex-col gap-2">
           <div className="flex flex-row justify-between items-start">
@@ -43,6 +45,7 @@ export default function Modal({
           </div>
           {children}
         </div>
+        {actions && <div className="modal-action">{actions}</div>}
       </div>
 
       {/* backdropのクリック時にモーダルを閉じる */}

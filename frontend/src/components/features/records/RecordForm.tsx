@@ -1,4 +1,5 @@
 import Button from "@/components/buttons/Button";
+import FooterActionContainer from "@/components/form/FooterActionContainer";
 import InputLabel from "@/components/form/InputLabel";
 import InputRadio from "@/components/form/InputRadio";
 import InputRadioLabel from "@/components/form/InputRadioLabel";
@@ -65,12 +66,19 @@ export default function RecordForm({
           {...register("memo")}
         />
       </InputLabel>
-      <Button type="submit" variant="primary">
-        Submit
-      </Button>
-      <Button type="button" variant="secondary" onClick={handleCancel}>
-        Cancel
-      </Button>
+      <FooterActionContainer>
+        <Button type="submit" variant="primary" size="md">
+          Submit
+        </Button>
+        <Button
+          type="button"
+          variant="secondary"
+          size="md"
+          onClick={handleCancel}
+        >
+          Cancel
+        </Button>
+      </FooterActionContainer>
     </form>
   );
 }

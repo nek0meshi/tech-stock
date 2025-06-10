@@ -4,6 +4,7 @@ import type { ReactNode } from "react";
 import { useMemo } from "react";
 interface ButtonProps {
   children: ReactNode;
+  className?: string;
   href?: string;
   isExternal?: boolean;
   onClick?: () => void | Promise<void>;
@@ -27,9 +28,10 @@ const buttonSizes = {
 
 export default function Button({
   children,
+  className: propsClassName,
   type = "button",
   variant = "primary",
-  size = "md",
+  size = "sm",
   outline = false,
   href,
   isExternal = false,
@@ -43,8 +45,9 @@ export default function Button({
         buttonVariants[variant],
         buttonSizes[size],
         outline ? "btn-outline" : "",
+        propsClassName,
       ),
-    [variant, outline, size],
+    [variant, outline, size, propsClassName],
   );
 
   if (href) {
