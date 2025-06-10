@@ -4,6 +4,7 @@ import useToast from "@/client/hooks/useToast";
 import Button from "@/components/buttons/Button";
 import RecordForm from "@/components/features/records/RecordForm";
 import Container from "@/components/layout/Container";
+import LoadingPage from "@/components/layout/LoadingPage";
 import PageHeader from "@/components/layout/PageHeader";
 import useConfirmModal from "@/components/modals/ConfirmModal/useConfirmModal";
 import DeleteModal from "@/components/modals/DeleteModal";
@@ -103,7 +104,7 @@ export default function EditRecord() {
     }
   }, [result.data?.record, reset]);
 
-  if (result.fetching) return <div>Loading...</div>;
+  if (result.fetching) return <LoadingPage />;
   if (result.error) return <div>Error: {result.error.message}</div>;
   if (!record) return <div>Record not found</div>;
 
