@@ -1,0 +1,7 @@
+query GetArticleInfo($url: String!) {
+  articleInfo(url: $url) {
+    title
+    description
+    imageUrl
+  }
+}

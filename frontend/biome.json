@@ -7,7 +7,12 @@
   },
   "files": {
     "ignoreUnknown": false,
-    "ignore": [".next", "prisma/generated", "src/generated"]
+    "ignore": [
+      ".next",
+      "prisma/generated",
+      "src/generated",
+      "src/server/grpc-client/generated"
+    ]
   },
   "formatter": {
     "enabled": true,

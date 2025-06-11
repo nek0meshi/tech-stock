@@ -1,4 +1,5 @@
 type Query {
   records: [Record!]!
   record(id: ID!): Record!
+  articleInfo(url: String!): ArticleInfo!
 }

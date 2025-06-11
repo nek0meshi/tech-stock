@@ -1,4 +1,5 @@
 import typeDefs from "@/server/schema";
+import { getArticleInfo } from "@/server/services/article-service";
 import {
   createRecord,
   deleteRecord,
@@ -7,7 +8,6 @@ import {
   updateRecord,
 } from "@/server/services/record-service";
 import { createSchema, createYoga } from "graphql-yoga";
-
 const schema = createSchema({
   typeDefs,
   resolvers: {
@@ -21,6 +21,13 @@ const schema = createSchema({
         const record = await getRecord(id);
 
         return { ...record, tags: [] };
+      },
+      articleInfo: async (_, { url }) => {
+        const articleInfo = await getArticleInfo({ url });
+
+        console.log({ articleInfo });
+
+        return articleInfo;
       },
     },
     Mutation: {

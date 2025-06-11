@@ -7,6 +7,7 @@ import BreadcrumbItem from "@/components/nav/BreadcrumbItem";
 import Breadcrumbs from "@/components/nav/Breadcrumbs";
 import {
   CreateRecordDocument,
+  GetArticleInfoDocument,
   RecordStatus,
   type Tag,
 } from "@/generated/client/graphql";
@@ -15,7 +16,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
-import { useMutation } from "urql";
+import { useMutation, useQuery } from "urql";
 
 export default function NewRecord() {
   const router = useRouter();
@@ -33,6 +34,15 @@ export default function NewRecord() {
     },
     resolver: zodResolver(RecordSchema),
   });
+  const [result] = useQuery({
+    query: GetArticleInfoDocument,
+    variables: {
+      url: "https://www.google.com",
+    },
+  });
+
+  console.log({ result });
+
   const [_, createRecord] = useMutation(CreateRecordDocument);
 
   console.log({ errors });

@@ -17,6 +17,12 @@ type Tag {
   name: String!
 }
 
+type ArticleInfo {
+  title: String!
+  description: String!
+  imageUrl: String!
+}
+
 enum RecordStatus {
   UNREAD
   READING
