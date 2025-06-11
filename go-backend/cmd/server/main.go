@@ -18,16 +18,22 @@ type articleInfoServer struct {
 
 func (s *articleInfoServer) GetArticleInfo(ctx context.Context, req *pb.GetArticleInfoRequest) (*pb.GetArticleInfoResponse, error) {
 	articleInfoService := service.NewArticleInfoService()
+
 	html, err := articleInfoService.FetchHTML(req.Url)
 	if err != nil {
 		return nil, err
 	}
 
 	title, err := articleInfoService.ExtractTitle(html)
+	if err != nil {
+		return nil, err
+	}
+
+	description := articleInfoService.ExtractDescription(html)
 
 	return &pb.GetArticleInfoResponse{
 		Title:       title,
-		Description: "test",
+		Description: description,
 		ImageUrl:    "test",
 	}, nil
 }
