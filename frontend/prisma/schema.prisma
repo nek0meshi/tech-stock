@@ -17,6 +17,9 @@ datasource db {
 model Record {
   id        String   @id @default(uuid())
   title     String
+  url       String   @default("")
+  description String @default("")
+  imageUrl  String   @default("")
   status    RecordStatus @default(UNREAD)
   rating    Int
   memo      String?

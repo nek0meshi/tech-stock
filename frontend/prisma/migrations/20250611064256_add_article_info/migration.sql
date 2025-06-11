@@ -1,0 +1,4 @@
+-- AlterTable
+ALTER TABLE "Record" ADD COLUMN     "description" TEXT NOT NULL DEFAULT '',
+ADD COLUMN     "imageUrl" TEXT NOT NULL DEFAULT '',
+ADD COLUMN     "url" TEXT NOT NULL DEFAULT '';
