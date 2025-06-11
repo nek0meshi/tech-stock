@@ -9,6 +9,7 @@ input CreateRecordInput {
   rating: Int!
   status: RecordStatus!
   memo: String!
+  url: String!
   readAt: DateTime
   # tags: [String!]!
 }
@@ -18,6 +19,7 @@ input UpdateRecordInput {
   rating: Int
   status: RecordStatus
   memo: String
+  url: String!
   readAt: DateTime
   # tags: [String!]!
 }

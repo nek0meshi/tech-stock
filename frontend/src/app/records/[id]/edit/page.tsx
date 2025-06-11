@@ -12,6 +12,7 @@ import BreadcrumbItem from "@/components/nav/BreadcrumbItem";
 import Breadcrumbs from "@/components/nav/Breadcrumbs";
 import {
   DeleteRecordDocument,
+  GetArticleInfoDocument,
   GetRecordDocument,
   type GetRecordQuery,
   type GetRecordQueryVariables,
@@ -44,26 +45,32 @@ export default function EditRecord() {
     handleSubmit,
     formState: { errors },
     reset,
+    getValues,
+    setValue,
+    watch,
   } = useForm<RecordFormData>({
     resolver: zodResolver(RecordSchema),
   });
+  const url = watch("url");
+  const [resultArticleInfo, fetchArticleInfo] = useQuery({
+    query: GetArticleInfoDocument,
+    variables: {
+      url,
+    },
+    pause: true,
+  });
 
-  console.log({ errors });
-
-  const onSubmit = async (data: RecordFormData) => {
-    console.log(data);
-
+  const onSubmit = async (input: RecordFormData) => {
     const result = await updateRecord({
       id,
       input: {
-        title: data.title,
-        rating: data.rating,
-        status: data.status,
-        memo: data.memo,
+        title: input.title,
+        rating: input.rating,
+        status: input.status,
+        memo: input.memo,
+        url: input.url,
       },
     });
-
-    console.log({ result });
 
     if (result.error) {
       console.error(result.error);
@@ -98,6 +105,23 @@ export default function EditRecord() {
     router.push("/records");
   };
 
+  const handleGetArticleInfo = async () => {
+    const url = getValues("url");
+    if (!url) {
+      return;
+    }
+
+    fetchArticleInfo();
+  };
+
+  useEffect(() => {
+    if (resultArticleInfo.data?.articleInfo) {
+      setValue("title", resultArticleInfo.data.articleInfo.title);
+      // setValue("description", resultArticleInfo.data.articleInfo.description);
+      // setValue("imageUrl", resultArticleInfo.data.articleInfo.imageUrl);
+    }
+  }, [resultArticleInfo.data, setValue]);
+
   useEffect(() => {
     if (result.data?.record) {
       reset(result.data.record);
@@ -127,6 +151,8 @@ export default function EditRecord() {
       <RecordForm
         handleSubmit={handleSubmit(onSubmit)}
         handleCancel={() => router.back()}
+        handleGetArticleInfo={handleGetArticleInfo}
+        disabledGetArticleInfo={!url}
         register={register}
         errors={errors}
       />

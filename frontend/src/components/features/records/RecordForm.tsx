@@ -12,6 +12,8 @@ import type { FieldErrors, UseFormRegister } from "react-hook-form";
 interface RecordFormProps {
   handleSubmit: FormEventHandler<HTMLFormElement>;
   handleCancel: () => void;
+  handleGetArticleInfo: () => void;
+  disabledGetArticleInfo: boolean;
   register: UseFormRegister<RecordFormData>;
   errors: FieldErrors<RecordFormData>;
 }
@@ -25,6 +27,8 @@ const STATUS_OPTIONS = [
 export default function RecordForm({
   handleSubmit,
   handleCancel,
+  handleGetArticleInfo,
+  disabledGetArticleInfo,
   register,
   errors,
 }: RecordFormProps) {
@@ -37,6 +41,24 @@ export default function RecordForm({
 
   return (
     <form className="flex flex-col gap-4" onSubmit={handleSubmit}>
+      <InputLabel label="URL" error={errors.url?.message}>
+        <div className="flex gap-2 w-full">
+          <input
+            type="text"
+            className="input input-bordered w-full"
+            {...register("url")}
+          />
+          <Button
+            type="button"
+            variant="secondary"
+            size="md"
+            disabled={disabledGetArticleInfo}
+            onClick={handleGetArticleInfo}
+          >
+            Get Article Info
+          </Button>
+        </div>
+      </InputLabel>
       <InputLabel label="Title" error={errors.title?.message}>
         <input
           type="text"
@@ -73,6 +95,7 @@ export default function RecordForm({
         <Button
           type="button"
           variant="secondary"
+          outline
           size="md"
           onClick={handleCancel}
         >

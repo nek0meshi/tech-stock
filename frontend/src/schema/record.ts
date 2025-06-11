@@ -9,6 +9,9 @@ export const TagSchema = z.object({
 export const RecordSchema = z.object({
   // id: z.string(),
   title: z.string().min(1).max(100),
+  url: z.string().min(1).max(255),
+  description: z.string().max(1000).optional(),
+  imageUrl: z.string().max(255).optional(),
   status: z.nativeEnum(RecordStatus),
   rating: z.number().min(1).max(10),
   memo: z.string(),

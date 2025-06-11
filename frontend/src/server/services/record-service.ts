@@ -10,7 +10,6 @@ export const getRecord = async (id: string) => {
   const record = await prisma.record.findUnique({
     where: { id },
   });
-  console.log({ record });
   return record;
 };
 

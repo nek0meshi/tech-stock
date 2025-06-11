@@ -2,6 +2,9 @@ query GetRecord($id: ID!) {
   record(id: $id) {
     id
     title
+    url
+    description
+    imageUrl
     tags {
       id
       name

@@ -12,6 +12,7 @@ interface ButtonProps {
   variant?: "primary" | "secondary" | "error";
   size?: "sm" | "md" | "lg";
   outline?: boolean;
+  disabled?: boolean;
 }
 
 const buttonVariants = {
@@ -36,6 +37,7 @@ export default function Button({
   href,
   isExternal = false,
   onClick,
+  disabled = false,
   ...props
 }: ButtonProps) {
   const className = useMemo(
@@ -45,9 +47,10 @@ export default function Button({
         buttonVariants[variant],
         buttonSizes[size],
         outline ? "btn-outline" : "",
+        disabled ? "btn-disabled cursor-not-allowed" : "",
         propsClassName,
       ),
-    [variant, outline, size, propsClassName],
+    [variant, outline, size, propsClassName, disabled],
   );
 
   if (href) {
@@ -58,6 +61,7 @@ export default function Button({
           href={href}
           target="_blank"
           rel="noopener noreferrer"
+          onClick={(e) => disabled && e.preventDefault()}
           {...props}
         >
           {children}
@@ -66,14 +70,25 @@ export default function Button({
     }
 
     return (
-      <Link className={className} href={href} {...props}>
+      <Link
+        className={className}
+        href={href}
+        onClick={(e) => disabled && e.preventDefault()}
+        {...props}
+      >
         {children}
       </Link>
     );
   }
 
   return (
-    <button type={type} onClick={onClick} className={className} {...props}>
+    <button
+      type={type}
+      onClick={onClick}
+      className={className}
+      disabled={disabled}
+      {...props}
+    >
       {children}
     </button>
   );

@@ -25,8 +25,6 @@ const schema = createSchema({
       articleInfo: async (_, { url }) => {
         const articleInfo = await getArticleInfo({ url });
 
-        console.log({ articleInfo });
-
         return articleInfo;
       },
     },
