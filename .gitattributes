@@ -1,0 +1,3 @@
+frontend/src/generated/** linguist-vendored
+frontend/src/server/grpc-client/generated/** linguist-vendored
+go-backend/pb/** linguist-vendored
