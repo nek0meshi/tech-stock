@@ -1,0 +1,26 @@
+syntax = "proto3";
+
+package image;
+
+option go_package = "tech-stock/pb;pb";
+
+service ImageService {
+  rpc SaveImageOfUrl(SaveImageOfUrlRequest) returns (SaveImageOfUrlResponse);
+  rpc GetImageUrl(GetImageUrlRequest) returns (GetImageUrlResponse);
+}
+
+message SaveImageOfUrlRequest {
+  string url = 1;
+}
+
+message SaveImageOfUrlResponse {
+  string object_key = 1;
+}
+
+message GetImageUrlRequest {
+  string object_key = 1;
+}
+
+message GetImageUrlResponse {
+  string presigned_url = 1;
+}
