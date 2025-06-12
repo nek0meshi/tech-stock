@@ -20,6 +20,7 @@ model Record {
   url       String   @default("")
   description String @default("")
   imageUrl  String   @default("")
+  objectKey String   @default("")
   status    RecordStatus @default(UNREAD)
   rating    Int
   memo      String?
