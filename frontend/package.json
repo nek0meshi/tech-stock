@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "setup": "npm run codegen",
+    "prepare": "npm run codegen && npm run prisma:generate",
     "dev": "next dev --turbopack",
     "build": "next build",
     "start": "next start",
@@ -12,6 +12,7 @@
     "check": "biome check",
     "check:fix": "biome check --write",
     "typecheck": "tsc --noEmit",
+    "prisma:generate": "prisma generate",
     "migrate": "prisma migrate dev --name"
   },
   "dependencies": {
