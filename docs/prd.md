@@ -48,38 +48,56 @@ TechStockは、技術系記事（Qiita、Zenn、ブログなど）の鑑賞記�
 ### フロントエンド
 - Next.js App Router
 - TypeScript
-- MUI
+- Tailwind/daisyUI
 - urql（GraphQLクライアント）
-- Jest / Playwright（テスト）
+- Vitest / Playwright（テスト）
 
-### バックエンド
+### バックエンド（Next.js）
 - graphql-yoga
 - PostgreSQL
-- wire（DI）
+
+### バックエンド（Go）
 - Go言語
 - gRPC
-
-### API層
-- GraphQL（フロントとの通信）
-- スキーマ設計により型安全な通信を実現
+- wire（DI）
 
 ---
 
-## データモデル（概要）
+## データモデル
 
-### Record
-- id: string
-- title: string
-- url: string
-- tags: Tag[]
-- status: enum ("unread", "read")
-- rating: number
-- memo: string
-- readAt: datetime?
+```graphql
+type Record {
+  id: ID!
+  title: String!
+  url: String!
+  description: String!
+  imageUrl: String!
+  status: RecordStatus!
+  rating: Int!
+  memo: String!
+  readAt: DateTime
+  tags: [Tag!]!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+}
 
-### Tag
-- id: string
-- name: string
+type Tag {
+  id: ID!
+  name: String!
+}
+
+type ArticleInfo {
+  title: String!
+  description: String!
+  imageUrl: String!
+}
+
+enum RecordStatus {
+  UNREAD
+  READING
+  READ
+}
+```
 
 ---
 
