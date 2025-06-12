@@ -11,6 +11,7 @@ input CreateRecordInput {
   memo: String!
   url: String!
   readAt: DateTime
+  imageUrl: String
   # tags: [String!]!
 }
 

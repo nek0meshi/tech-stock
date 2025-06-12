@@ -15,7 +15,7 @@ import { type RecordFormData, RecordSchema } from "@/schema/record";
 import { zodResolver } from "@hookform/resolvers/zod";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { useMutation, useQuery } from "urql";
 
@@ -37,7 +37,7 @@ export default function NewRecord() {
       memo: "",
       url: "",
       // description: "",
-      // imageUrl: "",
+      imageUrl: "",
       // tags: [],
     },
     resolver: zodResolver(RecordSchema),
@@ -83,7 +83,7 @@ export default function NewRecord() {
     if (resultArticleInfo.data?.articleInfo) {
       setValue("title", resultArticleInfo.data.articleInfo.title);
       // setValue("description", resultArticleInfo.data.articleInfo.description);
-      // setValue("imageUrl", resultArticleInfo.data.articleInfo.imageUrl);
+      setValue("imageUrl", resultArticleInfo.data.articleInfo.imageUrl);
     }
   }, [resultArticleInfo.data, setValue]);
 

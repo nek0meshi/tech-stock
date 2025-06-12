@@ -1,5 +1,6 @@
 import typeDefs from "@/server/schema";
 import { getArticleInfo } from "@/server/services/article-service";
+import { saveImageOfUrl } from "@/server/services/image-service";
 import {
   createRecord,
   deleteRecord,
@@ -8,6 +9,7 @@ import {
   updateRecord,
 } from "@/server/services/record-service";
 import { createSchema, createYoga } from "graphql-yoga";
+
 const schema = createSchema({
   typeDefs,
   resolvers: {
@@ -30,7 +32,17 @@ const schema = createSchema({
     },
     Mutation: {
       createRecord: async (_, { input }) => {
-        const record = await createRecord(input);
+        let imageUrl = "";
+        if (input.imageUrl) {
+          const response = await saveImageOfUrl({ url: input.imageUrl });
+
+          imageUrl = response.objectKey;
+        }
+
+        const record = await createRecord({
+          ...input,
+          imageUrl,
+        });
 
         return { ...record, tags: [] };
       },
