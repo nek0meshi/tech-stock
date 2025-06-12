@@ -1,3 +1,5 @@
+DC = docker compose -f ../docker-compose.yml
+
 .PHONY: setup
 setup:
 	go install golang.org/x/tools/cmd/goimports@latest
