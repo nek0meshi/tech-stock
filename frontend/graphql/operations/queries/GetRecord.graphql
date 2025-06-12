@@ -5,6 +5,7 @@ query GetRecord($id: ID!) {
     url
     description
     imageUrl
+    objectKey
     tags {
       id
       name

@@ -43,6 +43,8 @@ export default function NewRecord() {
     resolver: zodResolver(RecordSchema),
   });
   const url = watch("url");
+  const imageUrl = watch("imageUrl");
+
   const [resultArticleInfo, fetchArticleInfo] = useQuery({
     query: GetArticleInfoDocument,
     variables: {
@@ -107,6 +109,7 @@ export default function NewRecord() {
         disabledGetArticleInfo={!url}
         register={register}
         errors={errors}
+        imageUrl={imageUrl ?? ""}
       />
     </Container>
   );

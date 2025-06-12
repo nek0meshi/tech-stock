@@ -12,6 +12,7 @@ input CreateRecordInput {
   url: String!
   readAt: DateTime
   imageUrl: String
+  objectKey: String
   # tags: [String!]!
 }
 

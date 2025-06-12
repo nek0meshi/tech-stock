@@ -16,6 +16,7 @@ interface RecordFormProps {
   disabledGetArticleInfo: boolean;
   register: UseFormRegister<RecordFormData>;
   errors: FieldErrors<RecordFormData>;
+  imageUrl: string;
 }
 
 const STATUS_OPTIONS = [
@@ -31,6 +32,7 @@ export default function RecordForm({
   disabledGetArticleInfo,
   register,
   errors,
+  imageUrl,
 }: RecordFormProps) {
   const statusOptions = useMemo(() => {
     return STATUS_OPTIONS.map((option) => ({
@@ -66,6 +68,11 @@ export default function RecordForm({
           {...register("title")}
         />
       </InputLabel>
+      {imageUrl && (
+        <div className="flex justify-center">
+          <img src={imageUrl} alt="article" className="max-h-[200px]" />
+        </div>
+      )}
       <InputLabel label="Rating" error={errors.rating?.message}>
         <input
           type="number"

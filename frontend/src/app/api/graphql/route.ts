@@ -32,16 +32,16 @@ const schema = createSchema({
     },
     Mutation: {
       createRecord: async (_, { input }) => {
-        let imageUrl = "";
+        let objectKey = "";
         if (input.imageUrl) {
           const response = await saveImageOfUrl({ url: input.imageUrl });
 
-          imageUrl = response.objectKey;
+          objectKey = response.objectKey;
         }
 
         const record = await createRecord({
           ...input,
-          imageUrl,
+          objectKey,
         });
 
         return { ...record, tags: [] };

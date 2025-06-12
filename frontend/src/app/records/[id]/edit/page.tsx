@@ -155,6 +155,7 @@ export default function EditRecord() {
         disabledGetArticleInfo={!url}
         register={register}
         errors={errors}
+        imageUrl={record.imageUrl}
       />
       <DeleteModal
         target={record.title}

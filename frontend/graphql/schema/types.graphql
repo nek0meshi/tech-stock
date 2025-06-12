@@ -6,6 +6,7 @@ type Record {
   url: String!
   description: String!
   imageUrl: String!
+  objectKey: String!
   status: RecordStatus!
   rating: Int!
   memo: String!
