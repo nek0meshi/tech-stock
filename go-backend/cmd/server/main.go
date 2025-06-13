@@ -28,13 +28,13 @@ type imageServer struct {
 }
 
 func (s *articleInfoServer) GetArticleInfo(ctx context.Context, req *pb.GetArticleInfoRequest) (*pb.GetArticleInfoResponse, error) {
-	articleInfoService := service.NewArticleInfoService()
-
-	html, err := articleInfoService.FetchHTML(req.Url)
+	httpClient := infra.NewHttpClient()
+	html, err := httpClient.FetchHTML(req.Url)
 	if err != nil {
 		return nil, err
 	}
 
+	articleInfoService := service.NewArticleInfoService()
 	title, err := articleInfoService.ExtractTitle(html)
 	if err != nil {
 		return nil, err

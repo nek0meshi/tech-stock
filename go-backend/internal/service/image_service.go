@@ -5,7 +5,6 @@ import (
 	"fmt"
 	"log"
 	"mime"
-	"net/http"
 	"time"
 
 	"tech-stock/internal/infra"
@@ -19,14 +18,11 @@ func NewImageService() *ImageService {
 }
 
 func (s *ImageService) SaveImageOfUrl(ctx context.Context, imageUrl string, s3 *infra.MinioClient) (string, error) {
-	resp, err := http.Get(imageUrl)
+	httpClient := infra.NewHttpClient()
+	resp, err := httpClient.Get(imageUrl)
 	if err != nil {
-		log.Printf("http.Get error %s %v", imageUrl, err)
-
 		return "", err
 	}
-
-	defer resp.Body.Close()
 
 	contentType := resp.Header.Get("Content-Type")
 	ext, _ := mime.ExtensionsByType(contentType)
