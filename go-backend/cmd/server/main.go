@@ -7,91 +7,16 @@ import (
 	"os"
 	"time"
 
-	"tech-stock/internal/infra"
-	"tech-stock/internal/service"
-	"tech-stock/pb"
-
 	"github.com/joho/godotenv"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/metadata"
 	"google.golang.org/grpc/peer"
 	"google.golang.org/grpc/reflection"
+
+	"tech-stock/internal/infra"
+	"tech-stock/internal/server"
+	"tech-stock/pb"
 )
-
-type articleInfoServer struct {
-	pb.UnimplementedArticleInfoServiceServer
-}
-
-type imageServer struct {
-	pb.UnimplementedImageServiceServer
-}
-
-func (s *articleInfoServer) GetArticleInfo(ctx context.Context, req *pb.GetArticleInfoRequest) (*pb.GetArticleInfoResponse, error) {
-	httpClient := infra.NewHttpClient()
-	html, err := httpClient.FetchHTML(req.Url)
-	if err != nil {
-		return nil, err
-	}
-
-	articleInfoService := service.NewArticleInfoService()
-	title, err := articleInfoService.ExtractTitle(html)
-	if err != nil {
-		return nil, err
-	}
-
-	description := articleInfoService.ExtractDescription(html)
-	imageUrl := articleInfoService.ExtractImageURL(html)
-
-	log.Println(imageUrl)
-
-	return &pb.GetArticleInfoResponse{
-		Title:       title,
-		Description: description,
-		ImageUrl:    imageUrl,
-	}, nil
-}
-
-func (s *imageServer) SaveImageOfUrl(ctx context.Context, req *pb.SaveImageOfUrlRequest) (*pb.SaveImageOfUrlResponse, error) {
-	log.Println("url", req.Url)
-
-	imageService := service.NewImageService()
-
-	s3, err := getMinioClient()
-	if err != nil {
-		log.Printf("getMinioClient error: %v", err)
-		return nil, err
-	}
-
-	objectKey, err := imageService.SaveImageOfUrl(ctx, req.Url, s3)
-	if err != nil {
-		log.Printf("SaveImageOfUrl error: %v", err)
-		return nil, err
-	}
-
-	log.Println(objectKey)
-
-	return &pb.SaveImageOfUrlResponse{
-		ObjectKey: objectKey,
-	}, nil
-}
-
-func (s *imageServer) GetImageUrl(ctx context.Context, req *pb.GetImageUrlRequest) (*pb.GetImageUrlResponse, error) {
-	imageService := service.NewImageService()
-
-	s3, err := getMinioClient()
-	if err != nil {
-		return nil, err
-	}
-
-	presignedURL, err := imageService.GetImageOfURL(ctx, req.ObjectKey, s3)
-	if err != nil {
-		return nil, err
-	}
-
-	return &pb.GetImageUrlResponse{
-		PresignedUrl: presignedURL,
-	}, nil
-}
 
 func loggingInterceptor(
 	ctx context.Context,
@@ -137,11 +62,16 @@ func main() {
 		log.Fatalf("failed to listen: %v", err)
 	}
 
+	minioClient, err := getMinioClient()
+	if err != nil {
+		log.Fatalf("failed to getMinioClient: %v", err)
+	}
+
 	s := grpc.NewServer(
 		grpc.UnaryInterceptor(loggingInterceptor),
 	)
-	pb.RegisterArticleInfoServiceServer(s, &articleInfoServer{})
-	pb.RegisterImageServiceServer(s, &imageServer{})
+	pb.RegisterArticleInfoServiceServer(s, server.NewArticleInfoServer())
+	pb.RegisterImageServiceServer(s, server.NewImageServer(minioClient))
 
 	// Reflection有効化
 	reflection.Register(s)
