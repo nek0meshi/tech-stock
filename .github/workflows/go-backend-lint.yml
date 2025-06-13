@@ -1,0 +1,23 @@
+name: Go Backend Lint
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  golangci:
+    name: lint
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-go@v5
+        with:
+          go-version-file: go-backend/go.mod
+      - uses: golangci/golangci-lint-action@v8
+        with:
+          version: v2.1
+          working-directory: go-backend

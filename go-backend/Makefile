@@ -4,6 +4,7 @@ DC = docker compose -f ../docker-compose.yml
 setup:
 	go install golang.org/x/tools/cmd/goimports@latest
 	go install github.com/air-verse/air@latest
+	go install github.com/golangci/golangci-lint/cmd/golangci-lint@latest
 
 .PHONY: pb
 pb: clean-pb
@@ -19,9 +20,17 @@ pb: clean-pb
 clean-pb:
 	rm -rf pb/*
 
+.PHONY: lint
+lint:
+	golangci-lint run
+
+.PHONY: lint-fix
+lint-fix:
+	golangci-lint run --fix
+
 .PHONY: fmt
 fmt:
-	goimports -w .
+	golangci-lint fmt
 
 .PHONY: run-server
 run-server:

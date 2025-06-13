@@ -7,16 +7,15 @@ import (
 	"os"
 	"time"
 
-	"google.golang.org/grpc"
-	"google.golang.org/grpc/metadata"
-	"google.golang.org/grpc/peer"
-	"google.golang.org/grpc/reflection"
-
 	"tech-stock/internal/infra"
 	"tech-stock/internal/service"
 	"tech-stock/pb"
 
 	"github.com/joho/godotenv"
+	"google.golang.org/grpc"
+	"google.golang.org/grpc/metadata"
+	"google.golang.org/grpc/peer"
+	"google.golang.org/grpc/reflection"
 )
 
 type articleInfoServer struct {
@@ -41,7 +40,7 @@ func (s *articleInfoServer) GetArticleInfo(ctx context.Context, req *pb.GetArtic
 	}
 
 	description := articleInfoService.ExtractDescription(html)
-	imageUrl := articleInfoService.ExtractImageUrl(html)
+	imageUrl := articleInfoService.ExtractImageURL(html)
 
 	log.Println(imageUrl)
 
@@ -84,7 +83,7 @@ func (s *imageServer) GetImageUrl(ctx context.Context, req *pb.GetImageUrlReques
 		return nil, err
 	}
 
-	presignedURL, err := imageService.GetImageOfUrl(ctx, req.ObjectKey, s3)
+	presignedURL, err := imageService.GetImageOfURL(ctx, req.ObjectKey, s3)
 	if err != nil {
 		return nil, err
 	}
@@ -132,6 +131,7 @@ func main() {
 		log.Fatal("Error loading .env file")
 	}
 
+	// #nosec G102
 	lis, err := net.Listen("tcp", ":50051")
 	if err != nil {
 		log.Fatalf("failed to listen: %v", err)

@@ -10,8 +10,7 @@ import (
 	"tech-stock/internal/infra"
 )
 
-type ImageService struct {
-}
+type ImageService struct{}
 
 func NewImageService() *ImageService {
 	return &ImageService{}
@@ -45,7 +44,7 @@ func (s *ImageService) SaveImageOfUrl(ctx context.Context, imageUrl string, s3 *
 	return objectKey, nil
 }
 
-func (s *ImageService) GetImageOfUrl(ctx context.Context, objectKey string, s3 *infra.MinioClient) (string, error) {
+func (s *ImageService) GetImageOfURL(ctx context.Context, objectKey string, s3 *infra.MinioClient) (string, error) {
 	presignedURL, err := s3.GeneratePresignedURL(ctx, objectKey, 24*time.Hour)
 	if err != nil {
 		return "", err

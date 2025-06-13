@@ -6,8 +6,7 @@ import (
 	"golang.org/x/net/html"
 )
 
-type ArticleInfoService struct {
-}
+type ArticleInfoService struct{}
 
 func NewArticleInfoService() *ArticleInfoService {
 	return &ArticleInfoService{}
@@ -52,7 +51,7 @@ func (s *ArticleInfoService) ExtractDescription(doc *html.Node) string {
 	return ""
 }
 
-func (s *ArticleInfoService) ExtractImageUrl(doc *html.Node) string {
+func (s *ArticleInfoService) ExtractImageURL(doc *html.Node) string {
 	if doc.Type == html.ElementNode && doc.Data == "meta" {
 		for _, attr := range doc.Attr {
 			if attr.Key == "property" && attr.Val == "og:image" {
@@ -66,7 +65,7 @@ func (s *ArticleInfoService) ExtractImageUrl(doc *html.Node) string {
 	}
 
 	for c := doc.FirstChild; c != nil; c = c.NextSibling {
-		description := s.ExtractImageUrl(c)
+		description := s.ExtractImageURL(c)
 		if description != "" {
 			return description
 		}
