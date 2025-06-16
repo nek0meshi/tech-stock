@@ -1,6 +1,7 @@
 package service
 
 import (
+	"bytes"
 	"context"
 	"fmt"
 	"log"
@@ -34,7 +35,7 @@ func (s *ImageService) SaveImageOfUrl(ctx context.Context, imageUrl string, s3 *
 
 	log.Println("objectKey", objectKey)
 
-	err = s3.Upload(context.Background(), objectKey, resp.Body, contentType)
+	err = s3.Upload(context.Background(), objectKey, bytes.NewReader(resp.Body), contentType)
 	if err != nil {
 		log.Printf("s3.Upload error %s %v", objectKey, err)
 
