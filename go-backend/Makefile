@@ -35,7 +35,7 @@ fmt:
 
 .PHONY: run-server
 run-server:
-	cd cmd/server && air main.go
+	air
 
 URL ?= https://www.google.com
 .PHONY: test-grpc
