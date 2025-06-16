@@ -2,7 +2,6 @@ package server
 
 import (
 	"context"
-	"log"
 
 	"tech-stock/internal/infra"
 	"tech-stock/internal/service"
@@ -36,7 +35,11 @@ func (s *articleInfoServer) GetArticleInfo(
 	description := articleInfoService.ExtractDescription(html)
 	imageUrl := articleInfoService.ExtractImageURL(html)
 
-	log.Println(imageUrl)
+	// 画像ファイルであることを検証.
+	_, err = httpClient.FetchImage(imageUrl)
+	if err != nil {
+		return nil, err
+	}
 
 	return &pb.GetArticleInfoResponse{
 		Title:       title,

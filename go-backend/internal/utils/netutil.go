@@ -12,7 +12,7 @@ func IsSafeURL(rawURL string) bool {
 		return false
 	}
 
-	allowedSchemes := []string{"http", "https"}
+	allowedSchemes := []string{"https"}
 	if !slices.Contains(allowedSchemes, parsedURL.Scheme) {
 		return false
 	}
@@ -27,17 +27,17 @@ func IsSafeURL(rawURL string) bool {
 		}
 	}
 
-	// 安全かつ定番のホストに限定する
-	allowedHosts := []string{
-		"qiita.com",
-		"zenn.dev",
-		"medium.com",
-		"dev.to",
-		"github.com",
-		"https://qiita-user-contents.imgix.net",
-	}
+	// // 安全かつ定番のホストに限定する
+	// allowedHosts := []string{
+	// 	"qiita.com",
+	// 	"zenn.dev",
+	// 	"medium.com",
+	// 	"dev.to",
+	// 	"github.com",
+	// 	"https://qiita-user-contents.imgix.net",
+	// }
 
-	return slices.Contains(allowedHosts, parsedURL.Host)
+	// return slices.Contains(allowedHosts, parsedURL.Host)
 
-	// return true
+	return true
 }

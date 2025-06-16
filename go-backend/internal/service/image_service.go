@@ -19,7 +19,7 @@ func NewImageService() *ImageService {
 
 func (s *ImageService) SaveImageOfUrl(ctx context.Context, imageUrl string, s3 *infra.MinioClient) (string, error) {
 	httpClient := infra.NewHttpClient()
-	resp, err := httpClient.Get(imageUrl)
+	resp, err := httpClient.FetchImage(imageUrl)
 	if err != nil {
 		return "", err
 	}

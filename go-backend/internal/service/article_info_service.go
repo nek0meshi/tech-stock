@@ -65,9 +65,9 @@ func (s *ArticleInfoService) ExtractImageURL(doc *html.Node) string {
 	}
 
 	for c := doc.FirstChild; c != nil; c = c.NextSibling {
-		description := s.ExtractImageURL(c)
-		if description != "" {
-			return description
+		imageURL := s.ExtractImageURL(c)
+		if imageURL != "" {
+			return imageURL
 		}
 	}
 
