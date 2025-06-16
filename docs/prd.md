@@ -134,7 +134,9 @@ techstock/
 ```
 
 
----
+## TODO
+
+- logをlog/slogに変更
 
 ## 今後の拡張案（Optional）
 - 認証（Auth0等で個人ごとにログ管理）
