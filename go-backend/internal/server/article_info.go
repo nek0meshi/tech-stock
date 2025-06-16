@@ -17,7 +17,10 @@ func NewArticleInfoServer() *articleInfoServer {
 	return &articleInfoServer{}
 }
 
-func (s *articleInfoServer) GetArticleInfo(ctx context.Context, req *pb.GetArticleInfoRequest) (*pb.GetArticleInfoResponse, error) {
+func (s *articleInfoServer) GetArticleInfo(
+	ctx context.Context,
+	req *pb.GetArticleInfoRequest,
+) (*pb.GetArticleInfoResponse, error) {
 	httpClient := infra.NewHttpClient()
 	html, err := httpClient.FetchHTML(req.Url)
 	if err != nil {

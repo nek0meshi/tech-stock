@@ -20,7 +20,10 @@ func NewImageServer(minioClient *infra.MinioClient) *imageServer {
 	}
 }
 
-func (s *imageServer) SaveImageOfUrl(ctx context.Context, req *pb.SaveImageOfUrlRequest) (*pb.SaveImageOfUrlResponse, error) {
+func (s *imageServer) SaveImageOfUrl(
+	ctx context.Context,
+	req *pb.SaveImageOfUrlRequest,
+) (*pb.SaveImageOfUrlResponse, error) {
 	log.Println("url", req.Url)
 
 	imageService := service.NewImageService()

@@ -30,7 +30,13 @@ func loggingInterceptor(
 	p, _ := peer.FromContext(ctx)
 	md, _ := metadata.FromIncomingContext(ctx)
 
-	log.Printf("gRPC Request - Method:%s Remote:%s Metadata:%v Start:%s", info.FullMethod, p.Addr, md, start.Format(time.RFC3339))
+	log.Printf(
+		"gRPC Request - Method:%s Remote:%s Metadata:%v Start:%s",
+		info.FullMethod,
+		p.Addr,
+		md,
+		start.Format(time.RFC3339),
+	)
 
 	// リクエストを実行
 	resp, err = handler(ctx, req)

@@ -41,7 +41,11 @@ func (m *MinioClient) Upload(ctx context.Context, objectKey string, reader io.Re
 	return err
 }
 
-func (m *MinioClient) GeneratePresignedURL(ctx context.Context, objectKey string, expires time.Duration) (string, error) {
+func (m *MinioClient) GeneratePresignedURL(
+	ctx context.Context,
+	objectKey string,
+	expires time.Duration,
+) (string, error) {
 	presignedURL, err := m.client.PresignedGetObject(ctx, m.bucketName, objectKey, expires, nil)
 	if err != nil {
 		return "", err

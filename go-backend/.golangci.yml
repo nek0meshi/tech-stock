@@ -18,8 +18,11 @@ formatters:
   enable:
     - goimports      # import 文の並び替え＋未使用/不足importの整理を自動化
     - gofumpt        # `gofmt` に準拠しつつ、意見のある整形ルールを追加した最新版
+    - golines
 
   settings:
     gofumpt:
       module-path: tech-stock
       extra-rules: true
+    golines:
+      max-len: 120
