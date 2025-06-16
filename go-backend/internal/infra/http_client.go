@@ -3,7 +3,9 @@ package infra
 import (
 	"bytes"
 	"errors"
-	"image"
+	"fmt"
+	"image/jpeg"
+	"image/png"
 	"io"
 	"log"
 	"net/http"
@@ -12,7 +14,7 @@ import (
 
 	"tech-stock/internal/utils"
 
-	"golang.org/x/net/html"
+	"github.com/PuerkitoBio/goquery"
 )
 
 type HttpClient struct{}
@@ -58,6 +60,8 @@ func (*HttpClient) fetch(url string) (*HttpResponse, error) {
 
 	body, err := io.ReadAll(limitedReader)
 	if err != nil {
+		log.Printf("io.ReadAll error %v", err)
+
 		return nil, err
 	}
 
@@ -75,13 +79,13 @@ func (*HttpClient) fetch(url string) (*HttpResponse, error) {
 	}, nil
 }
 
-func (c *HttpClient) FetchHTML(url string) (*html.Node, error) {
+func (c *HttpClient) FetchHTML(url string) (*goquery.Document, error) {
 	resp, err := c.fetch(url)
 	if err != nil {
 		return nil, err
 	}
 
-	doc, err := html.Parse(bytes.NewReader(resp.Body))
+	doc, err := goquery.NewDocumentFromReader(bytes.NewReader(resp.Body))
 	if err != nil {
 		return nil, err
 	}
@@ -90,6 +94,8 @@ func (c *HttpClient) FetchHTML(url string) (*html.Node, error) {
 }
 
 func (c *HttpClient) FetchImage(url string) (*HttpResponse, error) {
+	log.Println("FetchImage url: ", url)
+
 	resp, err := c.fetch(url)
 	if err != nil {
 		return nil, err
@@ -98,19 +104,30 @@ func (c *HttpClient) FetchImage(url string) (*HttpResponse, error) {
 	imageContentTypes := []string{
 		"image/jpeg",
 		"image/png",
-		"image/gif",
-		"image/webp",
 	}
 
 	contentType := resp.Header.Get("Content-Type")
 
+	log.Println("contentType: ", contentType)
+
 	if !slices.Contains(imageContentTypes, contentType) {
-		return nil, errors.New("not an image")
+		return nil, errors.New("not an image Content-Type")
 	}
 
-	_, _, err = image.Decode(bytes.NewReader(resp.Body))
+	switch resp.Header.Get("Content-Type") {
+	case "image/jpeg":
+		_, err = jpeg.Decode(bytes.NewReader(resp.Body))
+	case "image/png":
+		_, err = png.Decode(bytes.NewReader(resp.Body))
+	default:
+		err = fmt.Errorf("unsupported content-type: %s", resp.Header.Get("Content-Type"))
+	}
+
+	// _, _, err = image.Decode(bytes.NewReader(resp.Body))
 	if err != nil {
-		return nil, errors.New("not an image")
+		log.Printf("image.Decode error %v", err)
+
+		return nil, errors.New("not an image image.Decode")
 	}
 
 	return resp, nil

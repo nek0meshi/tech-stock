@@ -2,9 +2,9 @@ package server
 
 import (
 	"context"
+	"log"
 
 	"tech-stock/internal/infra"
-	"tech-stock/internal/service"
 	"tech-stock/pb"
 )
 
@@ -26,19 +26,17 @@ func (s *articleInfoServer) GetArticleInfo(
 		return nil, err
 	}
 
-	articleInfoService := service.NewArticleInfoService()
-	title, err := articleInfoService.ExtractTitle(html)
-	if err != nil {
-		return nil, err
-	}
+	title := html.Find("title").Text()
+	description := html.Find("meta[name='description']").AttrOr("content", "")
+	imageUrl := html.Find("meta[property='og:image']").AttrOr("content", "")
 
-	description := articleInfoService.ExtractDescription(html)
-	imageUrl := articleInfoService.ExtractImageURL(html)
+	log.Println("imageUrl: ", imageUrl)
 
 	// 画像ファイルであることを検証.
 	_, err = httpClient.FetchImage(imageUrl)
 	if err != nil {
-		return nil, err
+		log.Println("FetchImage error: ", err)
+		imageUrl = ""
 	}
 
 	return &pb.GetArticleInfoResponse{
