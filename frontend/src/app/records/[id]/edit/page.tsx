@@ -1,167 +1,26 @@
-"use client";
+import { RecordDBSchema } from "@/schema/record";
+import { getRecord } from "@/server/services/record-service";
+import EditRecordContent from "./_components/EditRecordContent";
 
-import useToast from "@/client/hooks/useToast";
-import Button from "@/components/buttons/Button";
-import RecordForm from "@/components/features/records/RecordForm";
-import Container from "@/components/layout/Container";
-import LoadingPage from "@/components/layout/LoadingPage";
-import PageHeader from "@/components/layout/PageHeader";
-import useConfirmModal from "@/components/modals/ConfirmModal/useConfirmModal";
-import DeleteModal from "@/components/modals/DeleteModal";
-import BreadcrumbItem from "@/components/nav/BreadcrumbItem";
-import Breadcrumbs from "@/components/nav/Breadcrumbs";
-import {
-  DeleteRecordDocument,
-  GetArticleInfoDocument,
-  GetRecordDocument,
-  type GetRecordQuery,
-  type GetRecordQueryVariables,
-  UpdateRecordDocument,
-} from "@/generated/client/graphql";
-import { RecordFormData, RecordFormSchema } from "@/schema/record";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { useRouter } from "next/navigation";
-import { useParams } from "next/navigation";
-import { useEffect, useMemo } from "react";
-import { useForm } from "react-hook-form";
-import { useMutation, useQuery } from "urql";
+export default async function Page({
+  params,
+}: { params: Promise<{ id: string }> }) {
+  const { id } = await params;
 
-export default function EditRecord() {
-  const { id } = useParams<{ id: string }>();
-  const router = useRouter();
-  const confirmModal = useConfirmModal();
-  const toast = useToast();
+  const record = await getRecord(id);
 
-  const [result] = useQuery<GetRecordQuery, GetRecordQueryVariables>({
-    query: GetRecordDocument,
-    variables: { id },
-  });
-  const updateRecord = useMutation(UpdateRecordDocument)[1];
-  const deleteRecord = useMutation(DeleteRecordDocument)[1];
-  const record = useMemo(() => result.data?.record, [result.data]);
+  console.log({ record });
 
-  const {
-    register,
-    handleSubmit,
-    formState: { errors },
-    reset,
-    getValues,
-    setValue,
-    watch,
-  } = useForm<RecordFormData>({
-    resolver: zodResolver(RecordFormSchema),
-  });
-  const url = watch("url");
-  const [resultArticleInfo, fetchArticleInfo] = useQuery({
-    query: GetArticleInfoDocument,
-    variables: {
-      url,
-    },
-    pause: true,
-  });
+  if (!record) {
+    return <div>Record not found</div>;
+  }
 
-  const onSubmit = async (input: RecordFormData) => {
-    const result = await updateRecord({
-      id,
-      input: {
-        title: input.title,
-        rating: input.rating,
-        status: input.status,
-        memo: input.memo,
-        url: input.url,
-      },
-    });
+  const parsedRecord = RecordDBSchema.safeParse(record);
 
-    if (result.error) {
-      console.error(result.error);
-      toast.error("Failed to update record");
+  if (!parsedRecord.success) {
+    console.error(parsedRecord.error);
+    return <div>Invalid record</div>;
+  }
 
-      return;
-    }
-
-    toast.success("Record updated successfully");
-
-    router.push("/records");
-  };
-
-  const handleDelete = async () => {
-    const confirmResult = await confirmModal.confirm();
-
-    if (!confirmResult) {
-      return;
-    }
-
-    const result = await deleteRecord({ id });
-
-    if (result.error) {
-      console.error(result.error);
-      toast.error("Failed to delete record");
-
-      return;
-    }
-
-    toast.success("Record deleted successfully");
-
-    router.push("/records");
-  };
-
-  const handleGetArticleInfo = async () => {
-    const url = getValues("url");
-    if (!url) {
-      return;
-    }
-
-    fetchArticleInfo();
-  };
-
-  useEffect(() => {
-    if (resultArticleInfo.data?.articleInfo) {
-      setValue("title", resultArticleInfo.data.articleInfo.title);
-      // setValue("description", resultArticleInfo.data.articleInfo.description);
-      // setValue("imageUrl", resultArticleInfo.data.articleInfo.imageUrl);
-    }
-  }, [resultArticleInfo.data, setValue]);
-
-  useEffect(() => {
-    if (result.data?.record) {
-      reset(result.data.record);
-    }
-  }, [result.data?.record, reset]);
-
-  if (result.fetching) return <LoadingPage />;
-  if (result.error) return <div>Error: {result.error.message}</div>;
-  if (!record) return <div>Record not found</div>;
-
-  return (
-    <Container className="p-4 flex flex-col gap-4">
-      <PageHeader
-        title={record.title}
-        breadcrumbItems={
-          <Breadcrumbs>
-            <BreadcrumbItem href="/records">Records</BreadcrumbItem>
-            <BreadcrumbItem>{record.title}</BreadcrumbItem>
-          </Breadcrumbs>
-        }
-        actions={
-          <Button variant="error" size="sm" outline onClick={handleDelete}>
-            Delete
-          </Button>
-        }
-      />
-      <RecordForm
-        handleSubmit={handleSubmit(onSubmit)}
-        handleCancel={() => router.back()}
-        handleGetArticleInfo={handleGetArticleInfo}
-        disabledGetArticleInfo={!url}
-        register={register}
-        errors={errors}
-        imageUrl={record.imageUrl}
-      />
-      <DeleteModal
-        target={record.title}
-        isOpen={confirmModal.open}
-        onConfirm={confirmModal.handleConfirm}
-      />
-    </Container>
-  );
+  return <EditRecordContent record={parsedRecord.data} />;
 }
