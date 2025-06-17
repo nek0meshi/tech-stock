@@ -11,7 +11,7 @@ import {
   GetArticleInfoDocument,
   RecordStatus,
 } from "@/generated/client/graphql";
-import { type RecordFormData, RecordSchema } from "@/schema/record";
+import { type RecordFormData, RecordFormSchema } from "@/schema/record";
 import { zodResolver } from "@hookform/resolvers/zod";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
@@ -40,7 +40,7 @@ export default function NewRecord() {
       imageUrl: "",
       // tags: [],
     },
-    resolver: zodResolver(RecordSchema),
+    resolver: zodResolver(RecordFormSchema),
   });
   const url = watch("url");
   const imageUrl = watch("imageUrl");

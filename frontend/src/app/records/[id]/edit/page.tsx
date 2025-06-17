@@ -18,7 +18,7 @@ import {
   type GetRecordQueryVariables,
   UpdateRecordDocument,
 } from "@/generated/client/graphql";
-import { type RecordFormData, RecordSchema } from "@/schema/record";
+import { RecordFormData, RecordFormSchema } from "@/schema/record";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useRouter } from "next/navigation";
 import { useParams } from "next/navigation";
@@ -49,7 +49,7 @@ export default function EditRecord() {
     setValue,
     watch,
   } = useForm<RecordFormData>({
-    resolver: zodResolver(RecordSchema),
+    resolver: zodResolver(RecordFormSchema),
   });
   const url = watch("url");
   const [resultArticleInfo, fetchArticleInfo] = useQuery({
