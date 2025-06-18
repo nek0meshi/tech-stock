@@ -9,6 +9,16 @@ export default function useToast() {
     error: (message: string) => addToast(message, "error"),
     warning: (message: string) => addToast(message, "warning"),
     info: (message: string) => addToast(message, "info"),
+    toast: (
+      variant: "success" | "error" | "warning" | "info",
+      message: string,
+    ) => addToast(message, variant),
     remove: removeToast,
   };
+}
+
+export function isToastVariant(
+  variant: string,
+): variant is "success" | "error" | "warning" | "info" {
+  return ["success", "error", "warning", "info"].includes(variant);
 }

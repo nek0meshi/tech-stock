@@ -1,5 +1,6 @@
 import { RecordDBSchema } from "@/schema/record";
 import { getRecord } from "@/server/services/record-service";
+import { redirect } from "next/navigation";
 import EditRecordContent from "./_components/EditRecordContent";
 
 export default async function Page({
@@ -9,17 +10,15 @@ export default async function Page({
 
   const record = await getRecord(id);
 
-  console.log({ record });
-
   if (!record) {
-    return <div>Record not found</div>;
+    redirect("/records?toastVariant=error&toastMessage=Record not found");
   }
 
   const parsedRecord = RecordDBSchema.safeParse(record);
 
   if (!parsedRecord.success) {
     console.error(parsedRecord.error);
-    return <div>Invalid record</div>;
+    redirect("/records?toastVariant=error&toastMessage=Invalid record");
   }
 
   return <EditRecordContent record={parsedRecord.data} />;

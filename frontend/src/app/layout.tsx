@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import Toast from "@/components/feedback/toast/Toast";
+import ToastQueryHandler from "@/components/feedback/toast/ToastQueryHandler";
 import ClientProvider from "@/components/providers/ClientProvider";
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -31,6 +32,7 @@ export default function RootLayout({
         <ClientProvider>{children}</ClientProvider>
         <div id="modal-root" />
         <Toast />
+        <ToastQueryHandler />
       </body>
     </html>
   );
