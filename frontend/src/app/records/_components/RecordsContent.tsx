@@ -5,7 +5,7 @@ import Toast from "@/components/feedback/toast/Toast";
 import Container from "@/components/layout/Container";
 import PageHeader from "@/components/layout/PageHeader";
 import type { Record } from "@/schema/record";
-import Link from "next/link";
+import RecordCard from "./RecordCard";
 
 export default function RecordsContent({ records }: { records: Record[] }) {
   return (
@@ -18,24 +18,7 @@ export default function RecordsContent({ records }: { records: Record[] }) {
       <ul className="flex flex-col gap-4">
         {records.map((record) => (
           <li key={record.id}>
-            <div className="card card-bordered bg-base-100 shadow-sm">
-              <div className="card-body">
-                <h3 className="card-title">
-                  <Link href={`/records/${record.id}`}>{record.title}</Link>
-                </h3>
-                <p>{record.memo}</p>
-                <div className="flex justify-end">
-                  <Button
-                    href={`/records/${record.id}/edit`}
-                    variant="secondary"
-                    size="sm"
-                    outline
-                  >
-                    Edit
-                  </Button>
-                </div>
-              </div>
-            </div>
+            <RecordCard record={record} />
           </li>
         ))}
       </ul>

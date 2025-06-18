@@ -26,6 +26,6 @@ UIコンポーネントは、**見た目や構造ではなく、「何のため�
   /inputs           # 入力や選択のためのUI（TextInput, Checkbox, Dropdownなど）
   /layout           # ページ構成・構造を担うUI（Header, Footer, Gridなど）
   /modals           # モーダルUI（Dialog, ConfirmModal など）
-  /navigation       # ユーザーを移動・遷移させるUI（Tabs, Breadcrumbなど）
+  /nav              # ユーザーを移動・遷移させるUI（Tabs, Breadcrumbなど）
   /typography       # テキスト
 ```
