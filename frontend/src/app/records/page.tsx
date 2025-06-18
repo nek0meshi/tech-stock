@@ -1,56 +1,14 @@
-"use client";
+import { RecordDBSchema } from "@/schema/record";
+import { getRecords } from "@/server/services/record-service";
+import RecordsContent from "./_components/RecordsContent";
 
-import Button from "@/components/buttons/Button";
-import Toast from "@/components/feedback/toast/Toast";
-import Container from "@/components/layout/Container";
-import PageHeader from "@/components/layout/PageHeader";
-import {
-  GetRecordsDocument,
-  type GetRecordsQuery,
-  type GetRecordsQueryVariables,
-} from "@/generated/client/graphql";
-import Link from "next/link";
-import { useMemo } from "react";
-import { useQuery } from "urql";
+export default async function Page() {
+  const records = await getRecords();
 
-export default function Records() {
-  const [result] = useQuery<GetRecordsQuery, GetRecordsQueryVariables>({
-    query: GetRecordsDocument,
-  });
+  const parsedRecords = records
+    .map((record) => RecordDBSchema.safeParse(record))
+    .filter((result) => result.success)
+    .map((result) => result.data);
 
-  const records = useMemo(() => result.data?.records ?? [], [result.data]);
-
-  return (
-    <Container className="p-4 flex flex-col gap-4">
-      <PageHeader
-        title="Records"
-        actions={<Button href="/records/new">Add Record</Button>}
-      />
-      <Toast />
-      <ul className="flex flex-col gap-4">
-        {records.map((record) => (
-          <li key={record.id}>
-            <div className="card card-bordered bg-base-100 shadow-sm">
-              <div className="card-body">
-                <h3 className="card-title">
-                  <Link href={`/records/${record.id}`}>{record.title}</Link>
-                </h3>
-                <p>{record.memo}</p>
-                <div className="flex justify-end">
-                  <Button
-                    href={`/records/${record.id}/edit`}
-                    variant="secondary"
-                    size="sm"
-                    outline
-                  >
-                    Edit
-                  </Button>
-                </div>
-              </div>
-            </div>
-          </li>
-        ))}
-      </ul>
-    </Container>
-  );
+  return <RecordsContent records={parsedRecords} />;
 }
