@@ -1,12 +1,14 @@
 import Button from "@/components/buttons/Button";
+import Combobox from "@/components/form/Combobox";
 import FooterActionContainer from "@/components/form/FooterActionContainer";
 import InputLabel from "@/components/form/InputLabel";
 import InputRadio from "@/components/form/InputRadio";
 import InputRadioLabel from "@/components/form/InputRadioLabel";
 import RadioGroup from "@/components/form/RadioGroup";
+import TagListInput from "@/components/form/TagListInput";
 import { RecordStatus, type Tag } from "@/generated/client/graphql";
 import type { RecordFormData } from "@/schema/record";
-import { type FormEventHandler, useMemo } from "react";
+import { type FormEventHandler, useMemo, useState } from "react";
 import type { FieldErrors, UseFormRegister } from "react-hook-form";
 
 interface RecordFormProps {
@@ -40,6 +42,18 @@ export default function RecordForm({
       inputProps: register("status"),
     }));
   }, [register]);
+
+  const [tags, setTags] = useState<string[]>([]);
+
+  const handleAddTag = (input: string) => {
+    const newTag = input.trim();
+
+    if (tags.includes(newTag) || newTag === "") {
+      return;
+    }
+
+    setTags([...tags, newTag]);
+  };
 
   return (
     <form className="flex flex-col gap-4" onSubmit={handleSubmit}>
@@ -88,6 +102,27 @@ export default function RecordForm({
             </InputRadioLabel>
           ))}
         </RadioGroup>
+      </InputLabel>
+      <InputLabel
+        label="Tags"
+        // error={errors.tagIds?.message ?? ""}
+      >
+        <div className="flex flex-col gap-2 w-full">
+          <Combobox
+            placeholder="Search tags"
+            options={tags}
+            className="w-full"
+            onEnter={(input) => {
+              handleAddTag(input);
+            }}
+          />
+          <TagListInput
+            tags={tags.map((tag) => ({ id: tag, name: tag }))}
+            onRemoveTag={(id) => {
+              setTags(tags.filter((tag) => tag !== id));
+            }}
+          />
+        </div>
       </InputLabel>
       <InputLabel label="Memo" error={errors.memo?.message}>
         <textarea

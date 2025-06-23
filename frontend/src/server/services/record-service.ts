@@ -1,5 +1,6 @@
 import type { RecordFormData } from "@/schema/record";
 import prisma from "@/server/lib/prisma";
+import { upsertTags } from "./tag-service";
 
 export const getRecords = async () => {
   const records = await prisma.record.findMany();
@@ -14,16 +15,54 @@ export const getRecord = async (id: string) => {
 };
 
 export const createRecord = async (record: RecordFormData) => {
+  await upsertTags(record.tags);
+
+  const tagIds = await prisma.tag.findMany({
+    select: {
+      id: true,
+    },
+    where: {
+      name: {
+        in: record.tags,
+      },
+    },
+  });
+
+  // const { tags, ...input } = record;
+
   const newRecord = await prisma.record.create({
-    data: record,
+    data: {
+      ...record,
+      tags: {
+        connect: tagIds,
+      },
+    },
   });
   return newRecord;
 };
 
 export const updateRecord = async (id: string, record: RecordFormData) => {
+  await upsertTags(record.tags);
+
+  const tagIds = await prisma.tag.findMany({
+    select: {
+      id: true,
+    },
+    where: {
+      name: {
+        in: record.tags,
+      },
+    },
+  });
+
   const updatedRecord = await prisma.record.update({
     where: { id },
-    data: record,
+    data: {
+      ...record,
+      tags: {
+        connect: tagIds,
+      },
+    },
   });
   return updatedRecord;
 };

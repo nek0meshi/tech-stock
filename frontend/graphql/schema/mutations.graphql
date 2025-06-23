@@ -13,7 +13,7 @@ input CreateRecordInput {
   readAt: DateTime
   imageUrl: String
   objectKey: String
-  # tags: [String!]!
+  tags: [String!]!
 }
 
 input UpdateRecordInput {
@@ -23,5 +23,5 @@ input UpdateRecordInput {
   memo: String
   url: String!
   readAt: DateTime
-  # tags: [String!]!
+  tags: [String!]!
 }

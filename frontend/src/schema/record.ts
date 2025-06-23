@@ -14,7 +14,7 @@ export const RecordSchema = z.object({
   createdAt: z.date(),
   updatedAt: z.date(),
   // readAt: z.date().optional(),
-  // tags: z.array(TagSchema),
+  tags: z.array(z.string()),
 });
 
 export const RecordFormSchema = RecordSchema.omit({
