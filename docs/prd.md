@@ -113,7 +113,7 @@ techstock/
 │   ├── public/
 │   └── ...
 │
-├── backend/           # Go
+├── go-backend/           # Go
 │   ├── cmd/           # 実行ファイルエントリポイント
 │   │   └── techstock-server/
 │   ├── graph/         # gqlgen用のGraphQLスキーマ & リゾルバ
