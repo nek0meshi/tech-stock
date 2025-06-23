@@ -2,11 +2,6 @@ import { RecordStatus } from "@/generated/client/graphql";
 import { z } from "@/lib/zod";
 import { parseEnumValue } from "@/utils/enum";
 
-export const TagSchema = z.object({
-  id: z.string(),
-  name: z.string(),
-});
-
 export const RecordSchema = z.object({
   id: z.string(),
   title: z.string().min(1).max(100),

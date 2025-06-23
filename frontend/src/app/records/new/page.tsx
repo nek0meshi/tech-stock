@@ -1,5 +1,10 @@
+import { getTags } from "@/server/services/tag-service";
 import NewRecordContent from "./_components/NewRecordContent";
 
-export default function NewRecord() {
+export default async function NewRecord() {
+  const tags = await getTags();
+
+  console.log(tags);
+
   return <NewRecordContent />;
 }

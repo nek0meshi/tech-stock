@@ -8,6 +8,7 @@ import {
   getRecords,
   updateRecord,
 } from "@/server/services/record-service";
+import { getTags } from "@/server/services/tag-service";
 import { createSchema, createYoga } from "graphql-yoga";
 
 const schema = createSchema({
