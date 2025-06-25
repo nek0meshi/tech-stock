@@ -9,6 +9,6 @@ query GetRecords {
     status
     rating
     memo
-    readAt
+    # readAt
   }
 }

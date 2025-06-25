@@ -10,18 +10,18 @@ input CreateRecordInput {
   status: RecordStatus!
   memo: String!
   url: String!
-  readAt: DateTime
-  imageUrl: String
-  objectKey: String
+  # readAt: DateTime
+  imageUrl: String!
+  objectKey: String!
   tags: [String!]!
 }
 
 input UpdateRecordInput {
-  title: String
-  rating: Int
-  status: RecordStatus
-  memo: String
+  title: String!
+  rating: Int!
+  status: RecordStatus!
+  memo: String!
   url: String!
-  readAt: DateTime
+  # readAt: DateTime
   tags: [String!]!
 }

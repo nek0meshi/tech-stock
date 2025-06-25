@@ -13,6 +13,6 @@ query GetRecord($id: ID!) {
     status
     rating
     memo
-    readAt
+    # readAt
   }
 }

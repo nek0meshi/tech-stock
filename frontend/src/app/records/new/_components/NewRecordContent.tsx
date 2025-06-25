@@ -29,6 +29,7 @@ export default function NewRecordContent() {
     getValues,
     setValue,
     watch,
+    control,
   } = useForm<RecordFormData>({
     defaultValues: {
       title: "",
@@ -38,7 +39,8 @@ export default function NewRecordContent() {
       url: "",
       // description: "",
       imageUrl: "",
-      // tags: [],
+      objectKey: "",
+      tags: [],
     },
     resolver: zodResolver(RecordFormSchema),
   });
@@ -57,7 +59,10 @@ export default function NewRecordContent() {
 
   const onSubmit = async (input: RecordFormData) => {
     const result = await createRecord({
-      input,
+      input: {
+        ...input,
+        tags: input.tags.map((tag) => tag.id),
+      },
     });
 
     if (result.error) {
@@ -110,6 +115,8 @@ export default function NewRecordContent() {
         register={register}
         errors={errors}
         imageUrl={imageUrl ?? ""}
+        tags={[]}
+        control={control}
       />
     </Container>
   );

@@ -1,23 +1,35 @@
-import type { RecordFormData } from "@/schema/record";
+import type { CreateRecordInput, UpdateRecordInput } from "@/generated/graphql";
+import {
+  type RecordDBCreateInput,
+  RecordDBCreateSchema,
+  RecordDBUpdateSchema,
+} from "@/schema/record";
 import prisma from "@/server/lib/prisma";
 import { upsertTags } from "./tag-service";
 
 export const getRecords = async () => {
-  const records = await prisma.record.findMany();
+  const records = await prisma.record.findMany({
+    include: {
+      tags: true,
+    },
+  });
   return records;
 };
 
 export const getRecord = async (id: string) => {
   const record = await prisma.record.findUnique({
     where: { id },
+    include: {
+      tags: true,
+    },
   });
   return record;
 };
 
-export const createRecord = async (record: RecordFormData) => {
+export const createRecord = async (record: CreateRecordInput) => {
   await upsertTags(record.tags);
 
-  const tagIds = await prisma.tag.findMany({
+  const tags = await prisma.tag.findMany({
     select: {
       id: true,
     },
@@ -28,23 +40,26 @@ export const createRecord = async (record: RecordFormData) => {
     },
   });
 
-  // const { tags, ...input } = record;
+  const inputBeforeParse: RecordDBCreateInput = {
+    ...record,
+    // 現在未使用
+    description: "",
+    tags: tags.map((tag) => ({ id: tag.id })),
+    // tags
+  };
+
+  const input = RecordDBCreateSchema.parse(inputBeforeParse);
 
   const newRecord = await prisma.record.create({
-    data: {
-      ...record,
-      tags: {
-        connect: tagIds,
-      },
-    },
+    data: input,
   });
   return newRecord;
 };
 
-export const updateRecord = async (id: string, record: RecordFormData) => {
+export const updateRecord = async (id: string, record: UpdateRecordInput) => {
   await upsertTags(record.tags);
 
-  const tagIds = await prisma.tag.findMany({
+  const tags = await prisma.tag.findMany({
     select: {
       id: true,
     },
@@ -55,14 +70,16 @@ export const updateRecord = async (id: string, record: RecordFormData) => {
     },
   });
 
+  const input = RecordDBUpdateSchema.parse({
+    ...record,
+    // 現在未使用
+    description: "",
+    tags: tags.map((tag) => ({ id: tag.id })),
+  });
+
   const updatedRecord = await prisma.record.update({
     where: { id },
-    data: {
-      ...record,
-      tags: {
-        connect: tagIds,
-      },
-    },
+    data: input,
   });
   return updatedRecord;
 };

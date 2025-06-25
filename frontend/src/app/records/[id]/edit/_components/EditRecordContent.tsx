@@ -15,6 +15,7 @@ import {
   type RecordFormData,
   RecordFormSchema,
 } from "@/schema/record";
+import type { Tag } from "@/schema/tag";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useRouter } from "next/navigation";
 import { useEffect } from "react";
@@ -24,9 +25,13 @@ import DeleteRecordButton from "./DeleteRecordButton";
 
 interface EditRecordContentProps {
   record: Record;
+  tags: Tag[];
 }
 
-export default function EditRecordContent({ record }: EditRecordContentProps) {
+export default function EditRecordContent({
+  record,
+  tags,
+}: EditRecordContentProps) {
   console.log({ record });
 
   const router = useRouter();
@@ -41,6 +46,7 @@ export default function EditRecordContent({ record }: EditRecordContentProps) {
     getValues,
     setValue,
     watch,
+    control,
   } = useForm<RecordFormData>({
     defaultValues: {
       title: record.title,
@@ -48,6 +54,7 @@ export default function EditRecordContent({ record }: EditRecordContentProps) {
       status: record.status,
       memo: record.memo,
       url: record.url,
+      // objectKey: record.objectKey,
     },
     resolver: zodResolver(RecordFormSchema),
   });
@@ -64,11 +71,8 @@ export default function EditRecordContent({ record }: EditRecordContentProps) {
     const result = await updateRecord({
       id: record.id,
       input: {
-        title: input.title,
-        rating: input.rating,
-        status: input.status,
-        memo: input.memo,
-        url: input.url,
+        ...input,
+        tags: input.tags.map((tag) => tag.id),
       },
     });
 
@@ -126,6 +130,8 @@ export default function EditRecordContent({ record }: EditRecordContentProps) {
         register={register}
         errors={errors}
         imageUrl={record.imageUrl ?? ""}
+        tags={tags}
+        control={control}
       />
     </Container>
   );

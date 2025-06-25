@@ -10,5 +10,7 @@ export default async function Page() {
     .filter((result) => result.success)
     .map((result) => result.data);
 
+  console.log(parsedRecords);
+
   return <RecordsContent records={parsedRecords} />;
 }
