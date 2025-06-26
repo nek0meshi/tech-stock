@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Control, useController } from "react-hook-form";
+import { type Control, useController } from "react-hook-form";
 import TagListInput, { type Tag } from "./TagListInput";
 
 export default function TagListInputController<NAME extends string>({
@@ -12,7 +12,6 @@ export default function TagListInputController<NAME extends string>({
   name: NAME;
   control: Control<any>;
 }) {
-  console.log({props})
   const { field } = useController({ name, control, ...props });
 
   const [inputText, setInputText] = useState("");
