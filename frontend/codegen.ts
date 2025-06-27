@@ -14,6 +14,8 @@ const config: CodegenConfig = {
       //   useIndexSignature: true,
       // },
     },
+
+    // API向けの統合後スキーマ
     "./src/generated/schema.graphql": {
       plugins: ["schema-ast"],
       config: {
@@ -28,6 +30,8 @@ const config: CodegenConfig = {
         },
       },
     },
+
+    // クライアント向けのコード
     "./src/generated/client/": {
       preset: "client",
     },
